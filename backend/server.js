@@ -14,13 +14,17 @@ app.use(cors());
 app.use(express.json());
 
 const dbConfig = {
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT, // <-- Agregamos la variable del puerto
+    ssl: {
+        rejectUnauthorized: false // <-- El escudo de seguridad para Aiven
+    }
 };
 
-const puerto = process.env.PORT || 3000;
+const puerto = process.env.PORT || 3000; // Lo regresamos a 3000 para el servidor
 const jwtSecret = process.env.JWT_SECRET;
 
 
