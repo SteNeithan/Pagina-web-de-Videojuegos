@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zona Gamer</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- MENÚ DE NAVEGACIÓN -->
+  <nav class="menu-principal">
+    <ul>
+      <li><a href="#" onclick="cambiarVista('inicio')">Inicio</a></li>
+      <li><a href="#" onclick="cambiarVista('categorias')">Categorías</a></li>
+      <li><a href="#" onclick="cambiarVista('plataformas')">Plataformas</a></li>
+    </ul>
+    
+    <div class="menu-derecha">
+      <button id="btn-carrito" onclick="cambiarVista('carrito')" class="btn-icono-nav" title="Ver Carrito">
+        🛒 <span id="contador-carrito">0</span>
+      </button>
+
+      <button id="btn-login" onclick="mostrarLogin()" class="btn-admin-icono" title="Panel de Administración">
+        👤
+      </button>
+    </div>
+  </nav>
+
+  <!-- SECCIÓN: INICIO -->
+  <section id="inicio" class="vista-activa seccion-inicio-compacta">
+    <div class="bienvenida-limpia animacion-entrada">
+      <h1>Bienvenido a tu Catálogo Gamer</h1>
+      <p>Explora nuestro inventario de videojuegos y plataformas digitales.</p>
+    </div>
+    
+    <div class="caja-carrusel-destacados animacion-entrada">
+      <div class="contenedor-slider">
+        <div id="slider-track" class="slider-track"></div>
+      </div>
+    </div>
+
+    <div class="instrucciones-limpias animacion-entrada">
+      <p><strong>¿Cómo comprar?</strong> 1. Explora el catálogo &bull; 2. Selecciona tu juego &bull; 3. Agrega al carrito &bull; 4. Realiza el pago y recibe tu clave por WhatsApp.</p>
+    </div>
+  </section>
+
+  <!-- SECCIÓN: CATEGORÍAS -->
+  <section id="categorias" class="vista-oculta">
+    <div class="botones-categorias">
+      <button onclick="filtrarPorCategoria('Todos')">Todos</button>
+      <button onclick="filtrarPorCategoria('Acción')">Acción</button>
+      <button onclick="filtrarPorCategoria('Terror')">Terror</button>
+      <button onclick="filtrarPorCategoria('Disparos')">Disparos</button>
+      <button onclick="filtrarPorCategoria('Carreras')">Carreras</button>
+    </div>
+    <div id="contenedor-juegos-categorias" class="catalogo-grid"></div>
+  </section>
+  
+  <!-- SECCIÓN: PLATAFORMAS -->
+  <section id="plataformas" class="vista-oculta">
+    <div class="filtros-contenedor">
+      <label for="filtro-plataforma">Selecciona tu consola:</label>
+      <select id="filtro-plataforma" onchange="filtrarPorPlataforma()">
+        <option value="todos">Todos</option>
+        <option value="PlayStation 5">PlayStation 5</option>
+        <option value="Xbox Series">Xbox Series</option>
+        <option value="PC">PC</option>
+        <option value="Nintendo Switch 2">Nintendo Switch 2</option>
+      </select>
+    </div>
+    <div id="contenedor-juegos" class="catalogo-grid"></div>
+  </section>
+
+  <!-- PANEL DE ADMINISTRACIÓN -->
+  <section id="admin" class="vista-oculta">
+    <div class="caja-admin">
+      <h2>Agregar Nuevo Videojuego</h2>
+      <p>Llena los datos para registrar un título en el catálogo.</p>
+      
+      <form id="formulario-juego" onsubmit="guardarNuevoJuego(event)">
+        <div class="grupo-input">
+          <label for="nuevo-titulo">Título del Juego:</label>
+          <input type="text" id="nuevo-titulo" required placeholder="Ej. The Casting of Frank Stone">
+        </div>
+
+        <div class="grupo-input">
+          <label for="nueva-descripcion">Descripción:</label>
+          <textarea id="nueva-descripcion" rows="3" required placeholder="Breve sinopsis del juego..."></textarea>
+        </div>
+
+        <div class="grupo-input">
+          <label for="nueva-imagen">Nombre de la Imagen (con extensión):</label>
+          <input type="text" id="nueva-imagen" required placeholder="Ej. frank-stone.jpg">
+        </div>
+
+        <div class="grupo-input">
+          <label for="nuevo-precio">Precio ($):</label>
+          <input type="number" id="nuevo-precio" step="0.01" required placeholder="Ej. 1200.50">
+        </div>
+
+        <div class="grupo-input">
+          <label for="nueva-plataforma">Plataforma / Consola:</label>
+          <select id="nueva-plataforma" required>
+            <option value="" disabled selected>Selecciona una consola...</option>
+            <option value="PlayStation 5">PlayStation 5</option>
+            <option value="Xbox Series">Xbox Series</option>
+            <option value="PC">PC</option>
+            <option value="Nintendo Switch 2">Nintendo Switch 2</option>
+          </select>
+        </div>
+
+        <div class="grupo-input">
+          <label>Categorías (Mantén presionado Ctrl o Cmd):</label>
+          <select id="nuevas-categorias" multiple size="5" required style="padding: 8px;">
+            <option value="Acción">Acción</option>
+            <option value="Terror">Terror</option>
+            <option value="Disparos">Disparos</option>
+            <option value="Todos">Todos</option>
+            <option value="Carreras">Carreras</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-guardar">Guardar Videojuego</button>
+      </form>
+    </div>
+
+    <div class="caja-admin" style="margin-top: 20px; border-top: 2px dashed #ccc; padding-top: 20px;">
+      <h3>Gestión y Eliminación de Videojuegos</h3>
+      <p>Aquí puedes ver los juegos actuales y eliminarlos con un solo clic:</p>
+      <div id="contenedor-admin-juegos" class="catalogo-grid"></div>
+    </div>
+  </section>
+
+  <!-- MODAL LOGIN ADMIN -->
+  <div id="seccion-login-admin" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+    <div style="background: white; padding: 30px; border-radius: 10px; width: 300px; box-shadow: 0px 4px 10px rgba(0,0,0,0.3); text-align: center;">
+      <h3 style="margin-bottom: 15px; color: #333;">Acceso de Administrador</h3>
+      <div style="margin-bottom: 15px; text-align: left;">
+        <label for="admin-usuario" style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Usuario:</label>
+        <input type="text" id="admin-usuario" placeholder="Ingresa tu usuario" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+      <div style="margin-bottom: 20px; text-align: left;">
+        <label for="admin-password" style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Contraseña:</label>
+        <input type="password" id="admin-password" placeholder="••••••••" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px;">
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <button onclick="enviarLoginHTML()" style="background-color: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Ingresar</button>
+        <button onclick="document.getElementById('seccion-login-admin').style.display='none'" style="background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA DEL CARRITO -->
+  <section id="vista-carrito" class="vista-oculta seccion-carrito">
+    <div class="caja-carrito">
+      <h2>🛒 Tu Carrito de Compras</h2>
+      <div id="lista-carrito-items"></div>
+      <div id="carrito-total-container" class="carrito-total-footer">
+        <h3>Total: $<span id="carrito-total">0.00</span></h3>
+        <button onclick="realizarCompraWhatsApp()" class="btn-whatsapp">
+          📲 Realizar compra por WhatsApp
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,495 @@
+/* =========================================================================
+   1. CONFIGURACIÓN GENERAL Y MODO OSCURO
+   ========================================================================= */
+body {
+  background-color: #0b0f19;
+  color: #e2e8f0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================================================
+   2. MENÚ DE NAVEGACIÓN PROFESIONAL
+   ========================================================================= */
+.menu-principal {
+  background-color: #111827;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1f2937;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.menu-principal ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  gap: 40px;
+}
+
+.menu-principal a {
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.menu-principal a:hover, .menu-principal a.active {
+  color: #ffffff;
+  background-color: #1f2937;
+}
+
+.btn-admin-icono {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #374151;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+.btn-admin-icono:hover {
+  background-color: #1f2937;
+  border-color: #e74c3c;
+  transform: scale(1.05);
+}
+
+/* =========================================================================
+   3. CONTROL DE VISTAS (SPA) - CORREGIDO PARA RESPETAR FLEXBOX
+   ========================================================================= */
+.vista-oculta {
+  display: none !important;
+}
+
+/* Comportamiento general de vistas activas */
+.vista-activa {
+  display: block;
+  animation: aparecerArriba 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* EXCEPCIÓN CLAVE: Obliga a la sección de inicio a usar Flexbox al estar activa */
+section#inicio.vista-activa {
+  display: flex !important;
+}
+
+@keyframes aparecerArriba {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================================================
+   4. DISEÑO DE INICIO PROFESIONAL (FLEX ESTRICTO Y CENTRADO)
+   ========================================================================= */
+.seccion-inicio-compacta {
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  min-height: calc(100vh - 75px); 
+  padding: 30px 20px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.bienvenida-limpia {
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+.caja-carrusel-destacados {
+  flex-grow: 1; /* Absorbe el espacio libre, empujando el título arriba y las instrucciones abajo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.instrucciones-limpias {
+  text-align: center;
+  font-size: 0.9rem;
+  color: #6b7280;
+  background: rgba(17, 24, 39, 0.6);
+  padding: 12px 25px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  width: 90%;
+  max-width: 900px;
+  margin: 20px auto 0 auto; /* Fuerza el anclaje al fondo y lo centra */
+}
+
+/* =========================================================================
+   5. CARRUSEL INTEGRADO (TARJETA COMPACTA Y UNIDA)
+   ========================================================================= */
+.contenedor-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.slider-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+
+.tarjeta-slider {
+  min-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center; 
+  gap: 40px; 
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+.info-slider {
+  width: 350px; 
+  display: flex;
+  color:#34d399;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.info-slider h3 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 10px 0;
+  line-height: 1.1;
+}
+
+.info-slider p {
+  font-size: 0.9rem;
+  color: #9ca3af;
+  margin-bottom: 15px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.imagen-slider-container {
+  width: 300px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imagen-slider-container img {
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 10px;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+}
+
+/* =========================================================================
+   6. CATÁLOGO Y TARJETAS
+   ========================================================================= */
+.catalogo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  padding: 40px;
+  background-color: #0b0f19;
+}
+
+.tarjeta-juego {
+  background-color: #111827; 
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  border: 1px solid #1f2937;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.tarjeta-juego:hover {
+  transform: translateY(-6px);
+  border-color: #374151;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+.tarjeta-juego img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+
+.info-juego {
+  padding: 22px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.info-juego h3 {
+  margin: 0 0 8px 0;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.consola {
+  color: #9ca3af; 
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.info-juego .precio {
+  color: #34d399; 
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin-top: auto; 
+}
+
+.btn-comprar {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 15px; 
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-comprar:hover {
+  background-color: #dc2626;
+}
+
+/* =========================================================================
+   7. FILTROS Y BOTONES
+   ========================================================================= */
+.filtros-contenedor {
+  text-align: center;
+  margin-top: 40px; /* <--- Despega el filtro de plataformas del menú */
+  margin-bottom: 30px;
+}
+
+.filtros-contenedor label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #9ca3af;
+  margin-right: 15px;
+}
+
+#filtro-plataforma {
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  border-radius: 8px;
+  border: 1px solid #374151;
+  background-color: #111827;
+  color: white;
+  cursor: pointer;
+  outline: none;
+}
+
+.botones-categorias {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 40px; /* <--- Despega los botones de categorías del menú */
+  margin-bottom: 30px;
+}
+
+.botones-categorias button {
+  background-color: #111827;
+  color: #9ca3af;
+  border: 1px solid #1f2937;
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.botones-categorias button:hover {
+  background-color: #1f2937;
+  color: #ffffff;
+}
+
+/* =========================================================================
+   8. PANEL DE ADMINISTRACIÓN
+   ========================================================================= */
+.caja-admin {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #111827;
+  padding: 35px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border: 1px solid #1f2937;
+}
+
+.caja-admin h2 {
+  text-align: center;
+  color: #ffffff;
+  margin-bottom: 8px;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.caja-admin p {
+  text-align: center;
+  color: #9ca3af;
+  margin-bottom: 30px;
+}
+
+.grupo-input {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.grupo-input label {
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.grupo-input input, 
+.grupo-input textarea,
+.grupo-input select {
+  padding: 12px 16px;
+  border: 1px solid #374151;
+  background-color: #0b0f19;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.btn-guardar {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
+}
+
+/* =========================================================================
+   9. CARRITO Y WHATSAPP
+   ========================================================================= */
+.menu-derecha {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-icono-nav {
+  background-color: #000000;
+  color: #ffffff;
+  border: 1px solid #374151;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  font-size: 1.1rem;
+}
+
+#contador-carrito {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #e74c3c;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+.seccion-carrito {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.caja-carrito {
+  background: #111827;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #1f2937;
+}
+
+.item-carrito-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0b0f19;
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #1f2937;
+}
+
+.btn-eliminar-item {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.carrito-total-footer {
+  margin-top: 30px;
+  text-align: right;
+  border-top: 1px solid #1f2937;
+  padding-top: 20px;
+}
+
+.btn-whatsapp {
+  background-color: #25d366;
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+}
