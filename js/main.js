@@ -8,7 +8,7 @@ let indiceSlider = 0;
 
 async function cargarCatalogo() {
   try {
-    const respuesta = await fetch('http://localhost:3000/api/catalogo-precios');
+    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/catalogo-precios');
     catalogoGlobal = await respuesta.json();
     
     pintarJuegos(catalogoGlobal);
@@ -22,7 +22,7 @@ async function cargarCatalogo() {
 
 async function cargarVistaCategorias() {
   try {
-    const respuesta = await fetch('http://localhost:3000/api/catalogo-completo');
+    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/catalogo-completo');
     catalogoCategorias = await respuesta.json();
     
     pintarJuegosCategorias(catalogoCategorias);
@@ -214,7 +214,7 @@ async function enviarLoginHTML() {
   }
 
   try {
-    const respuesta = await fetch('http://localhost:3000/api/login', {
+    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ usuario: usuarioForm, password: passwordForm }) 
@@ -282,7 +282,7 @@ async function guardarNuevoJuego(event) {
   };
 
   try {
-    const respuesta = await fetch('http://localhost:3000/api/juegos', {
+    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/juegos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -321,7 +321,7 @@ async function eliminarVideojuegoPorId(idJuego) {
   }
 
   try {
-    const respuesta = await fetch(`http://localhost:3000/api/juegos/${idJuego}`, {
+    const respuesta = await fetch(`https://pagina-web-de-videojuegos.onrender.com/api/juegos/${idJuego}`, {
       method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + token }
     });
