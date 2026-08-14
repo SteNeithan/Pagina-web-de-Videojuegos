@@ -363,7 +363,7 @@ function iniciarCarrusel(listaJuegos) {
           <span class="precio-slider">$${juego.precio}</span>
         </div>
         <div class="imagen-slider-container">
-          <img src="\.${juego.imagen_url || ''}" alt="${juego.titulo}">
+          <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
         </div>
       </div>
     `;
