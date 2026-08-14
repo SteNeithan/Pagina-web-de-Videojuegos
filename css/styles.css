@@ -493,3 +493,50 @@ section#inicio.vista-activa {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
 }
+
+/*nuevoooooooooooooooooooooooooooooooo
+
+ =========================================
+   ADAPTACIÓN PARA PANTALLAS DE CELULARES
+   ========================================= */
+@media screen and (max-width: 768px) {
+  
+  /* Cambiamos la tarjeta a formato columna invertida (Imagen arriba, texto abajo) */
+  .tarjeta-slider {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+    padding: 20px 10px;
+    gap: 20px;
+  }
+
+  /* La información toma todo el ancho disponible */
+  .info-slider {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  /* Centramos y ajustamos el contenedor de la imagen */
+  .imagen-slider-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Hacemos que la imagen se vea mucho más estética en móvil */
+  .imagen-slider-container img {
+    width: 90%; 
+    max-width: 300px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+
+  /* Ajuste rápido para que el menú superior no se desborde */
+  header, nav, .navbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 10px;
+  }
+}
