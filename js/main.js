@@ -469,3 +469,42 @@ function realizarCompraWhatsApp() {
 
   window.open(urlWhatsApp, '_blank');
 }
+
+// =========================================
+// LÓGICA DEL MENÚ DE HAMBURGUESA
+// =========================================
+function inicializarMenuHamburguesa() {
+    const btnHamburguesa = document.getElementById('btn-hamburguesa');
+    const navPrincipal = document.getElementById('nav-principal');
+    const overlay = document.getElementById('overlay-menu');
+    const linksMenu = document.querySelectorAll('#nav-principal a'); // Todos los links
+
+    // Función que alterna las clases 'active'
+    function toggleMenu() {
+        btnHamburguesa.classList.toggle('active');
+        navPrincipal.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        // Evita que la página principal se mueva de fondo cuando el menú está abierto
+        document.body.classList.toggle('no-scroll');
+    }
+
+    // 1. Clic en el botón de hamburguesa
+    btnHamburguesa.addEventListener('click', toggleMenu);
+
+    // 2. Clic en la capa oscura (cierra el menú)
+    overlay.addEventListener('click', toggleMenu);
+
+    // 3. Clic en cualquier link del menú (cierra el menú para ir a la sección)
+    linksMenu.forEach(link => {
+        link.addEventListener('click', () => {
+            // Solo si el menú está abierto (tiene la clase active)
+            if (navPrincipal.classList.contains('active')) {
+                toggleMenu();
+            }
+        });
+    });
+}
+
+// Ejecutamos la función cuando cargue el DOM
+document.addEventListener('DOMContentLoaded', inicializarMenuHamburguesa);

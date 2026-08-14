@@ -493,3 +493,107 @@ section#inicio.vista-activa {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
 }
+
+
+/* =========================================
+   ESTILOS GENERALES (ESCRITORIO)
+   ========================================= */
+
+/* Ocultamos el botón de hamburguesa en PC */
+.menu-hamburguesa {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 1000; /* Siempre arriba */
+}
+
+/* Estilo de las 3 rayitas (usando spans) */
+.menu-hamburguesa span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px 0;
+  background-color: white; /* Color de las rayas */
+  transition: all 0.3s ease-in-out; /* Animación suave */
+}
+
+/* Capa oscura oculta por defecto */
+.overlay-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 998;
+  display: none; /* Oculto */
+}
+
+/* =========================================
+   ADAPTACIÓN PARA TELÉFONOS (Media Query)
+   ========================================= */
+@media screen and (max-width: 768px) {
+
+  /* 1. Mostramos el botón de hamburguesa */
+  .menu-hamburguesa {
+    display: block;
+  }
+
+  /* 2. Convertimos el menú en un panel lateral oculto */
+  .nav-principal {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Totalmente oculto a la derecha */
+    width: 250px; /* Ancho del panel */
+    height: 100vh; /* Todo el alto de la pantalla */
+    background-color: #1a1a1a; /* Color de fondo del menú móvil */
+    z-index: 999;
+    transition: right 0.3s ease-in-out; /* Animación de deslizado */
+    display: flex;
+    flex-direction: column; /* Botones arriba a abajo */
+    padding-top: 80px; /* Espacio para que no choque con el botón */
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+  }
+
+  /* 3. Estilo de los links dentro del menú móvil */
+  .nav-principal ul {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+  }
+
+  .nav-principal ul li a {
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  /* =========================================
+     CLASES ACTIVAS (Se activan con JS)
+     ========================================= */
+
+  /* Clase para mostrar el menú (desliza desde la derecha) */
+  .nav-principal.active {
+    right: 0;
+  }
+
+  /* Clase para mostrar la capa oscura */
+  .overlay-menu.active {
+    display: block;
+  }
+
+  /* Animación del botón (Forma una 'X') */
+  .menu-hamburguesa.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+  }
+  .menu-hamburguesa.active span:nth-child(2) {
+    opacity: 0; /* Desaparece la raya del medio */
+  }
+  .menu-hamburguesa.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+  }
+}

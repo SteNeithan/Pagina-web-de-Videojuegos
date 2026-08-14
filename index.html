@@ -8,8 +8,23 @@
 </head>
 <body>
 
-  <!-- MENÚ DE NAVEGACIÓN -->
-  <nav class="menu-principal">
+  <!-- =========================================
+       NUEVO: BOTÓN DE HAMBURGUESA (MÓVILES)
+       =========================================
+       Este botón permanecerá invisible en PC y solo 
+       aparecerá en pantallas pequeñas gracias al CSS. -->
+  <button class="menu-hamburguesa" id="btn-hamburguesa" title="Abrir menú">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <!-- =========================================
+       MENÚ DE NAVEGACIÓN PRINCIPAL
+       =========================================
+       Agregamos el id="nav-principal" 
+       para que JavaScript pueda controlarlo en móviles. -->
+  <nav class="menu-principal nav-principal" id="nav-principal">
     <ul>
       <li><a href="#" onclick="cambiarVista('inicio')">Inicio</a></li>
       <li><a href="#" onclick="cambiarVista('categorias')">Categorías</a></li>
@@ -27,7 +42,17 @@
     </div>
   </nav>
 
-  <!-- SECCIÓN: INICIO -->
+  <!-- =========================================
+       NUEVO: CAPA OSCURA DE FONDO (MÓVILES)
+       =========================================
+       Al hacer clic fuera del menú en un celular, 
+       esta capa detectará el clic y cerrará el panel. -->
+  <div class="overlay-menu" id="overlay-menu"></div>
+
+
+  <!-- =========================================
+       SECCIÓN: INICIO
+       ========================================= -->
   <section id="inicio" class="vista-activa seccion-inicio-compacta">
     <div class="bienvenida-limpia animacion-entrada">
       <h1>Bienvenido a tu Catálogo Gamer</h1>
@@ -45,7 +70,9 @@
     </div>
   </section>
 
-  <!-- SECCIÓN: CATEGORÍAS -->
+  <!-- =========================================
+       SECCIÓN: CATEGORÍAS
+       ========================================= -->
   <section id="categorias" class="vista-oculta">
     <div class="botones-categorias">
       <button onclick="filtrarPorCategoria('Todos')">Todos</button>
@@ -57,7 +84,9 @@
     <div id="contenedor-juegos-categorias" class="catalogo-grid"></div>
   </section>
   
-  <!-- SECCIÓN: PLATAFORMAS -->
+  <!-- =========================================
+       SECCIÓN: PLATAFORMAS
+       ========================================= -->
   <section id="plataformas" class="vista-oculta">
     <div class="filtros-contenedor">
       <label for="filtro-plataforma">Selecciona tu consola:</label>
@@ -72,7 +101,9 @@
     <div id="contenedor-juegos" class="catalogo-grid"></div>
   </section>
 
-  <!-- PANEL DE ADMINISTRACIÓN -->
+  <!-- =========================================
+       SECCIÓN: PANEL DE ADMINISTRACIÓN
+       ========================================= -->
   <section id="admin" class="vista-oculta">
     <div class="caja-admin">
       <h2>Agregar Nuevo Videojuego</h2>
@@ -125,6 +156,7 @@
       </form>
     </div>
 
+    <!-- SUB-SECCIÓN: GESTIÓN DE JUEGOS -->
     <div class="caja-admin" style="margin-top: 20px; border-top: 2px dashed #ccc; padding-top: 20px;">
       <h3>Gestión y Eliminación de Videojuegos</h3>
       <p>Aquí puedes ver los juegos actuales y eliminarlos con un solo clic:</p>
@@ -132,7 +164,9 @@
     </div>
   </section>
 
-  <!-- MODAL LOGIN ADMIN -->
+  <!-- =========================================
+       MODAL: LOGIN DE ADMINISTRADOR
+       ========================================= -->
   <div id="seccion-login-admin" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
     <div style="background: white; padding: 30px; border-radius: 10px; width: 300px; box-shadow: 0px 4px 10px rgba(0,0,0,0.3); text-align: center;">
       <h3 style="margin-bottom: 15px; color: #333;">Acceso de Administrador</h3>
@@ -151,7 +185,9 @@
     </div>
   </div>
 
-  <!-- VISTA DEL CARRITO -->
+  <!-- =========================================
+       SECCIÓN: VISTA DEL CARRITO
+       ========================================= -->
   <section id="vista-carrito" class="vista-oculta seccion-carrito">
     <div class="caja-carrito">
       <h2>🛒 Tu Carrito de Compras</h2>
@@ -165,6 +201,7 @@
     </div>
   </section>
 
+  <!-- RECUERDA: Tus scripts deben ir aquí abajo antes de cerrar el body -->
   <script src="js/main.js"></script>
 </body>
 </html>
