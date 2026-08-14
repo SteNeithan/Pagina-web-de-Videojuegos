@@ -493,33 +493,3 @@ section#inicio.vista-activa {
   cursor: pointer;
   box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
 }
-
-/* =========================================
-     AJUSTE ESPECÍFICO PARA EL MENÚ (NAVBAR)
-     ========================================= */
-  header, nav, .navbar, .menu {
-    display: flex !important;
-    flex-wrap: wrap !important; /* ¡Esta es la propiedad clave! Permite que los elementos bajen de renglón */
-    justify-content: center !important;
-    align-items: center;
-    width: 100% !important;
-    padding: 10px 5px !important;
-    box-sizing: border-box;
-  }
-
-  /* Ajustamos las listas o botones dentro del menú */
-  nav ul, .navbar ul, .menu ul {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px; /* Espacio entre los botones */
-    padding: 0;
-    margin: 0;
-    width: 100%;
-  }
-
-  /* Hacemos los textos un poco más pequeños para que quepan mejor */
-  nav a, .nav-link, header a {
-    font-size: 14px !important;
-    padding: 5px 10px !important;
-  }
