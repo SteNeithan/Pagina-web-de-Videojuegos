@@ -81,58 +81,51 @@ function pintarJuegosCategorias(lista) {
     return;
   }
 
-  // --- EL ESCUDO ANTI-CLONES DEFINITIVO ---
-  const juegosUnicos = [];
-  const titulosVistos = new Set(); // Usaremos el título como identificador infalible
+  // --- LA LICUADORA: FUSIÓN DE CATEGORÍAS ---
+  const juegosFusionados = {}; // Usaremos un diccionario para agruparlos
 
   lista.forEach(juego => {
-    // Convertimos el título a minúsculas para comparar sin errores
-    const tituloJuego = juego.titulo.trim().toLowerCase(); 
+    const tituloJuego = juego.titulo.trim().toLowerCase();
+    const categoriaActual = juego.categoria;
 
-    // Si el título no está en nuestra memoria, lo agregamos para dibujarlo
-    if (!titulosVistos.has(tituloJuego)) {
-      titulosVistos.add(tituloJuego);
-      juegosUnicos.push(juego);
+    // Si es la primera vez que vemos el juego, lo registramos
+    if (!juegosFusionados[tituloJuego]) {
+      // Hacemos una copia del juego y le creamos una lista vacía para sus categorías
+      juegosFusionados[tituloJuego] = { ...juego, listaCategorias: [] };
+    }
+
+    // Rescatamos la categoría actual asegurándonos de que exista y NO sea "Todos"
+    if (categoriaActual && categoriaActual.toLowerCase() !== 'todos') {
+      // Si la categoría aún no está en la lista de este juego, la agregamos
+      if (!juegosFusionados[tituloJuego].listaCategorias.includes(categoriaActual)) {
+        juegosFusionados[tituloJuego].listaCategorias.push(categoriaActual);
+      }
     }
   });
+
+  // Convertimos el diccionario agrupado de nuevo a un arreglo normal
+  const juegosUnicos = Object.values(juegosFusionados);
   // ----------------------------------------
 
-  // Ahora dibujamos SOLO la lista limpia de juegos únicos
+  // Ahora dibujamos los juegos con todas sus categorías unidas
   juegosUnicos.forEach(juego => {
     const idUnico = juego.id || juego.id_juego || 1;
+    
+    // Juntamos las categorías separadas por coma. Si no tiene, ponemos 'General'
+    const textoCategorias = juego.listaCategorias.length > 0 
+                            ? juego.listaCategorias.join(', ') 
+                            : 'General';
+
     const tarjetaHTML = `
       <div class="tarjeta-juego">
         <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
         <div class="info-juego">
           <span class="consola">${juego.juegos_plataformas || juego.consola || juego.plataforma || 'Consola'}</span>
           <h3>${juego.titulo}</h3>
-          <p class="consola" style="font-size: 0.75rem;">Categoría: ${juego.categoria || 'General'}</p> 
+          <p class="consola" style="font-size: 0.75rem;">Categorías: ${textoCategorias}</p> 
           <p class="descripcion">${juego.descripcion || 'Sin descripción'}</p>
           <p class="precio">$${juego.precio || 'Consultar precio'}</p>
           <button onclick="agregarAlCarrito(${idUnico})" class="btn-comprar">Agregar al carrito</button>
-        </div>
-      </div>
-    `;
-    contenedor.innerHTML += tarjetaHTML;
-  });
-}
-
-function pintarJuegosAdmin(listaDeJuegos) {
-  const contenedor = document.getElementById('contenedor-admin-juegos');
-  if (!contenedor) return;
-  
-  contenedor.innerHTML = ''; 
-
-  listaDeJuegos.forEach(juego => {
-    const idUnico = juego.id || juego.id_juego || 1;
-    const tarjetaHTML = `
-      <div class="tarjeta-juego">
-        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
-        <div class="info-juego">
-          <h3>${juego.titulo}</h3>
-          <p class="consola">ID: ${idUnico}</p>
-          <p class="precio">$${juego.precio}</p>
-          <button onclick="eliminarVideojuegoPorId(${idUnico})" class="btn-comprar" style="background-color: #dc3545; margin-top: 10px; cursor: pointer;">Eliminar</button>
         </div>
       </div>
     `;
