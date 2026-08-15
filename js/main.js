@@ -148,8 +148,27 @@ function filtrarPorPlataforma() {
 
 function filtrarPorCategoria(categoriaElegida) {
   if (categoriaElegida === 'Todos') {
-    pintarJuegosCategorias(catalogoCategorias);
+    // 1. Creamos una memoria para recordar qué juegos ya vimos
+    const juegosUnicos = [];
+    const idsVistos = new Set();
+
+    // 2. Revisamos todo el catálogo paso a paso
+    catalogoCategorias.forEach(juego => {
+      // Obtenemos su ID único exactamente como lo tienes en tu código
+      const idUnico = juego.id || juego.id_juego || 1;
+      
+      // Si no hemos visto este ID, lo agregamos a la lista final
+      if (!idsVistos.has(idUnico)) {
+        idsVistos.add(idUnico);
+        juegosUnicos.push(juego);
+      }
+    });
+
+    // 3. Pintamos solo los juegos únicos
+    pintarJuegosCategorias(juegosUnicos);
+    
   } else {
+    // Si elige una categoría específica (como Acción o Terror), filtramos normal
     const filtrados = catalogoCategorias.filter(
       juego => juego.categoria && juego.categoria.toLowerCase() === categoriaElegida.toLowerCase()
     );
