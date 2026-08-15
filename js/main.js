@@ -81,13 +81,29 @@ function pintarJuegosCategorias(lista) {
     return;
   }
 
+  // --- EL ESCUDO ANTI-CLONES DEFINITIVO ---
+  const juegosUnicos = [];
+  const titulosVistos = new Set(); // Usaremos el título como identificador infalible
+
   lista.forEach(juego => {
+    // Convertimos el título a minúsculas para comparar sin errores
+    const tituloJuego = juego.titulo.trim().toLowerCase(); 
+
+    // Si el título no está en nuestra memoria, lo agregamos para dibujarlo
+    if (!titulosVistos.has(tituloJuego)) {
+      titulosVistos.add(tituloJuego);
+      juegosUnicos.push(juego);
+    }
+  });
+  // ----------------------------------------
+
+  // Ahora dibujamos SOLO la lista limpia de juegos únicos
+  juegosUnicos.forEach(juego => {
     const idUnico = juego.id || juego.id_juego || 1;
     const tarjetaHTML = `
       <div class="tarjeta-juego">
         <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
         <div class="info-juego">
-          <!-- Aquí mandamos llamar la plataforma usando el nombre de tu BD -->
           <span class="consola">${juego.juegos_plataformas || juego.consola || juego.plataforma || 'Consola'}</span>
           <h3>${juego.titulo}</h3>
           <p class="consola" style="font-size: 0.75rem;">Categoría: ${juego.categoria || 'General'}</p> 
