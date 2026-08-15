@@ -133,6 +133,28 @@ function pintarJuegosCategorias(lista) {
   });
 }
 
+function pintarJuegosAdmin(listaDeJuegos) {
+  const contenedor = document.getElementById('contenedor-admin-juegos');
+  if (!contenedor) return;
+  
+  contenedor.innerHTML = ''; 
+
+  listaDeJuegos.forEach(juego => {
+    const idUnico = juego.id || juego.id_juego || 1;
+    const tarjetaHTML = `
+      <div class="tarjeta-juego">
+        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
+        <div class="info-juego">
+          <h3>${juego.titulo}</h3>
+          <p class="consola">ID: ${idUnico}</p>
+          <p class="precio">$${juego.precio}</p>
+          <button onclick="eliminarVideojuegoPorId(${idUnico})" class="btn-comprar" style="background-color: #dc3545; margin-top: 10px; cursor: pointer;">Eliminar</button>
+        </div>
+      </div>
+    `;
+    contenedor.innerHTML += tarjetaHTML;
+  });
+}
 
 /* =========================================================================
    3. FILTROS Y NAVEGACIÓN (SPA)
