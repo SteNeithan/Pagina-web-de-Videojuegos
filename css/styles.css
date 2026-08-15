@@ -536,32 +536,41 @@ section#inicio.vista-activa {
    ========================================= */
 @media screen and (max-width: 768px) {
 
-  /* 1. Mostramos el botón de hamburguesa */
+  /* 1. Botón de hamburguesa flotando a la izquierda */
   .menu-hamburguesa {
     display: block;
+    position: absolute;
+    left: 15px;
+    top: 15px; /* Ajusta este valor si tu menú de PC es más alto */
+    z-index: 1001; /* Asegura que el botón esté por encima de todo */
   }
 
-  /* 2. Convertimos el menú en un panel lateral oculto */
+  /* 2. Barra principal siempre visible (Contiene el carrito) */
   .nav-principal {
-    position: fixed;
-    top: 0;
-    right: -100%; /* Totalmente oculto a la derecha */
-    width: 250px; /* Ancho del panel */
-    height: 100vh; /* Todo el alto de la pantalla */
-    background-color: #1a1a1a; /* Color de fondo del menú móvil */
-    z-index: 999;
-    transition: right 0.3s ease-in-out; /* Animación de deslizado */
-    display: flex;
-    flex-direction: column; /* Botones arriba a abajo */
-    padding-top: 80px; /* Espacio para que no choque con el botón */
-    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
-  }
-
-  /* 3. Estilo de los links dentro del menú móvil */
-  .nav-principal ul {
-    flex-direction: column;
+    display: flex !important;
+    justify-content: flex-end !important; /* Empuja el carrito a la derecha */
     align-items: center;
     width: 100%;
+    padding: 10px 15px;
+    box-sizing: border-box;
+  }
+
+  /* 3. Convertimos SOLO LA LISTA (ul) en el panel lateral oculto */
+  .nav-principal ul {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Oculto a la derecha */
+    width: 250px; 
+    height: 100vh; 
+    background-color: #1a1a1a; /* Fondo del menú móvil */
+    z-index: 999;
+    transition: right 0.3s ease-in-out; 
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    padding-top: 80px; 
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
+    margin: 0;
     gap: 20px;
   }
 
@@ -576,8 +585,8 @@ section#inicio.vista-activa {
      CLASES ACTIVAS (Se activan con JS)
      ========================================= */
 
-  /* Clase para mostrar el menú (desliza desde la derecha) */
-  .nav-principal.active {
+  /* Cuando JS activa el menú, deslizamos SOLAMENTE la lista (ul) */
+  .nav-principal.active ul {
     right: 0;
   }
 
@@ -591,7 +600,7 @@ section#inicio.vista-activa {
     transform: rotate(-45deg) translate(-5px, 6px);
   }
   .menu-hamburguesa.active span:nth-child(2) {
-    opacity: 0; /* Desaparece la raya del medio */
+    opacity: 0; 
   }
   .menu-hamburguesa.active span:nth-child(3) {
     transform: rotate(45deg) translate(-5px, -6px);
