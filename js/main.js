@@ -512,7 +512,7 @@ function realizarCompraWhatsApp() {
     total += Number(juego.precio);
   });
 
-  mensaje += `%0A%0A*Total a pagar: $${total.toFixed(2)}*%0AQuedo a la espera de las instrucciones de pago.`;
+  mensaje += `%0A%0A*Total a pagar: $${total.toFixed(2)}*%0AQuedo a la espera de las instrucciones de pago!.`;
 
   const numeroWhatsApp = "524922686525"; 
   const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
