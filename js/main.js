@@ -281,7 +281,9 @@ async function enviarLoginHTML() {
         title: '¡Acceso concedido!',
         text: datos.mensaje,
         showConfirmButton: false,
-        timer: 2000
+        timer: 2000,
+        background: '#1a1a1a', 
+        color: '#ffffff'
       });
       
       localStorage.setItem('tokenGamer', datos.token);
@@ -294,15 +296,19 @@ async function enviarLoginHTML() {
       
     } else {
       // Alerta de error animada
-      Swal.fire({ icon: 'error', title: 'Acceso denegado', text: datos.error });
+      Swal.fire({ icon: 'error', title: 'Acceso denegado', text: datos.error, background: '#1a1a1a', color: '#ffffff' });
     }
     
   } catch (error) {
     console.error("Error de conexión:", error);
-    Swal.fire({ icon: 'error', title: 'Error de red', text: 'No se pudo conectar con el servidor.' });
+    Swal.fire({ icon: 'error', title: 'Error de red', text: 'No se pudo conectar con el servidor.', background: '#1a1a1a', color: '#ffffff' });
   }
 }
 
+
+/* =========================================================================
+   5. PANEL DE ADMINISTRACIÓN
+   ========================================================================= */
 
 /* =========================================================================
    5. PANEL DE ADMINISTRACIÓN
@@ -313,7 +319,7 @@ async function guardarNuevoJuego(event) {
 
   const token = localStorage.getItem('tokenGamer');
   if (!token) {
-    alert("¡Alto ahí! No tienes permiso para guardar juegos.");
+    Swal.fire({ icon: 'error', title: '¡Alto ahí!', text: 'No tienes permiso para guardar juegos.', background: '#1a1a1a', color: '#ffffff' });
     return;
   }
 
@@ -329,7 +335,7 @@ async function guardarNuevoJuego(event) {
   }
 
   if (categoriasSeleccionadas.length === 0) {
-    alert("Por favor selecciona al menos una categoría.");
+    Swal.fire({ icon: 'warning', title: 'Faltan datos', text: 'Por favor selecciona al menos una categoría.', background: '#1a1a1a', color: '#ffffff' });
     return;
   }
 
@@ -355,17 +361,17 @@ async function guardarNuevoJuego(event) {
     const datos = await respuesta.json();
 
     if (respuesta.ok) {
-      alert("¡Éxito! " + datos.mensaje);
+      Swal.fire({ icon: 'success', title: '¡Juego Guardado!', text: datos.mensaje, background: '#1a1a1a', color: '#ffffff' });
       document.getElementById('formulario-juego').reset();
       cargarCatalogo();
       cargarVistaCategorias();
     } else {
-      alert("Hubo un error: " + datos.error);
+      Swal.fire({ icon: 'error', title: 'Error', text: datos.error, background: '#1a1a1a', color: '#ffffff' });
     }
     
   } catch (error) {
     console.error("Error al intentar guardar:", error);
-    alert("No se pudo conectar con el servidor.");
+    Swal.fire({ icon: 'error', title: 'Error de red', text: 'No se pudo conectar con el servidor.', background: '#1a1a1a', color: '#ffffff' });
   }
 }
 
@@ -373,12 +379,26 @@ async function eliminarVideojuegoPorId(idJuego) {
   const token = localStorage.getItem('tokenGamer');
   
   if (!token) {
-    alert("¡Alto ahí! No tienes permiso para realizar esta acción.");
+    Swal.fire({ icon: 'error', title: '¡Alto ahí!', text: 'No tienes permiso para realizar esta acción.', background: '#1a1a1a', color: '#ffffff' });
     return;
   }
 
-  if (!confirm(`¿Estás seguro de eliminar este juego (ID: ${idJuego})?`)) {
-    return;
+ 
+  const confirmacion = await Swal.fire({
+    title: '¿Estás seguro?',
+    text: `Se eliminará el juego con ID: ${idJuego} para siempre.`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc3545', // Botón rojo
+    cancelButtonColor: '#6c757d',  // Botón gris
+    confirmButtonText: 'Sí, eliminar',
+    cancelButtonText: 'Cancelar',
+    background: '#1a1a1a',
+    color: '#ffffff'
+  });
+
+  if (!confirmacion.isConfirmed) {
+    return; // Si elige cancelar, se detiene el proceso
   }
 
   try {
@@ -390,16 +410,16 @@ async function eliminarVideojuegoPorId(idJuego) {
     const datos = await respuesta.json();
 
     if (respuesta.ok) {
-      alert("¡Éxito! " + datos.mensaje);
+      Swal.fire({ icon: 'success', title: '¡Eliminado!', text: datos.mensaje, background: '#1a1a1a', color: '#ffffff' });
       cargarCatalogo();
       cargarVistaCategorias();
     } else {
-      alert("Hubo un error: " + datos.error);
+      Swal.fire({ icon: 'error', title: 'Error', text: datos.error, background: '#1a1a1a', color: '#ffffff' });
     }
 
   } catch (error) {
     console.error("Error al intentar eliminar:", error);
-    alert("No se pudo conectar con el servidor.");
+    Swal.fire({ icon: 'error', title: 'Error de red', text: 'No se pudo conectar con el servidor.', background: '#1a1a1a', color: '#ffffff' });
   }
 }
 
