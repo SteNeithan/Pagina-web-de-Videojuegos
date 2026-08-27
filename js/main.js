@@ -68,6 +68,7 @@ function pintarJuegos(listaDeJuegos) {
     `;
     contenedor.innerHTML += tarjetaHTML;
   });
+  <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}" loading="lazy"></img>
 }
 
 function pintarJuegosCategorias(lista) {
@@ -92,6 +93,7 @@ function pintarJuegosCategorias(lista) {
     if (!juegosFusionados[tituloJuego]) {
       // Hacemos una copia del juego y le creamos una lista vacía para sus categorías
       juegosFusionados[tituloJuego] = { ...juego, listaCategorias: [] };
+      <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}" loading="lazy"></img>
     }
 
     // Rescatamos la categoría actual asegurándonos de que exista y NO sea "Todos"
@@ -154,6 +156,7 @@ function pintarJuegosAdmin(listaDeJuegos) {
     `;
     contenedor.innerHTML += tarjetaHTML;
   });
+  <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}" loading="lazy"></img>
 }
 
 /* =========================================================================
