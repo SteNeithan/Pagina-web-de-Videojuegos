@@ -520,7 +520,15 @@ function eliminarDelCarrito(index) {
 
 function realizarCompraWhatsApp() {
   if (carritoGlobal.length === 0) {
-    alert("Tu carrito está vacío.");
+    Swal.fire({
+      icon: 'info',
+      title: 'Tu carrito está vacío',
+      text: 'Explora el catálogo y agrega al menos un juego para continuar.',
+      background: '#1a1a1a', 
+      color: '#ffffff',
+      confirmButtonColor: '#28a745',
+      confirmButtonText: 'Entendido'
+    });
     return;
   }
 
