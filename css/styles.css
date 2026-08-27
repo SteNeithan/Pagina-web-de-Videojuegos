@@ -606,3 +606,45 @@ section#inicio.vista-activa {
     transform: rotate(45deg) translate(-5px, -6px);
   }
 }
+/* =========================================
+   ANIMACIÓN DEL BOTÓN DE COMPRA
+   ========================================= */
+.btn-comprar {
+  background-color: #e50914; /* Rojo intenso */
+  color: #ffffff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  width: 100%; /* Para que ocupe todo el ancho de la tarjeta */
+  margin-top: 10px;
+  /* Aplicamos la animación de latido */
+  animation: latido-rojo 2s infinite;
+}
+
+/* Efecto al pasar el mouse por encima */
+.btn-comprar:hover {
+  background-color: #ff1e27;
+  transform: scale(1.05);
+  animation: none; /* Detenemos el latido al apuntar para facilitar el clic */
+  box-shadow: 0px 0px 15px #ff1e27;
+}
+
+/* Fotogramas clave de la animación */
+@keyframes latido-rojo {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0.7);
+  }
+  70% {
+    transform: scale(1.03);
+    box-shadow: 0 0 0 10px rgba(229, 9, 20, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(229, 9, 20, 0);
+  }
+}
