@@ -55,7 +55,7 @@ function pintarJuegos(listaDeJuegos) {
     const idUnico = juego.id || juego.id_juego || 1;
     const tarjetaHTML = `
       <div class="tarjeta-juego">
-        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}" loading="lazy">
+        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
         <div class="info-juego">
           <!-- Aquí mandamos llamar la plataforma usando el nombre de tu BD -->
           <span class="consola">${juego.juegos_plataformas || juego.consola || juego.plataforma || 'Consola'}</span>
@@ -119,7 +119,7 @@ function pintarJuegosCategorias(lista) {
 
     const tarjetaHTML = `
       <div class="tarjeta-juego">
-        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}" loading="lazy">
+        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
         <div class="info-juego">
           <span class="consola">${juego.juegos_plataformas || juego.consola || juego.plataforma || 'Consola'}</span>
           <h3>${juego.titulo}</h3>
@@ -144,7 +144,7 @@ function pintarJuegosAdmin(listaDeJuegos) {
     const idUnico = juego.id || juego.id_juego || 1;
     const tarjetaHTML = `
       <div class="tarjeta-juego">
-        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}" loading="lazy">
+        <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
         <div class="info-juego">
           <h3>${juego.titulo}</h3>
           <p class="consola">ID: ${idUnico}</p>
