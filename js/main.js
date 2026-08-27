@@ -558,5 +558,49 @@ function inicializarMenuHamburguesa() {
     });
 }
 
+/* =========================================================================
+   8. ACCESO SECRETO DE ADMINISTRADOR (EASTER EGG)
+   ========================================================================= */
+
+// --- MÉTODO 1: PARA COMPUTADORA (TECLADO) ---
+let secuenciaTeclas = '';
+const palabraSecreta = 'admin'; // Esta es la palabra que debes teclear
+
+document.addEventListener('keydown', (evento) => {
+    // Vamos guardando las letras que presionas
+    secuenciaTeclas += evento.key.toLowerCase();
+    
+    // Mantenemos la cadena corta para no saturar la memoria
+    if (secuenciaTeclas.length > 10) {
+        secuenciaTeclas = secuenciaTeclas.slice(-10);
+    }
+    
+    // Si la cadena contiene "admin", abrimos el modal
+    if (secuenciaTeclas.includes(palabraSecreta)) {
+        mostrarLogin();
+        secuenciaTeclas = ''; // Reiniciamos la secuencia
+    }
+});
+
+// --- MÉTODO 2: PARA CELULARES (TOQUES TÁCTILES) ---
+let contadorToques = 0;
+let temporizadorToques;
+
+function toqueSecreto() {
+    contadorToques++;
+    
+    // Si tocas el título 5 veces seguidas, se abre el modal
+    if (contadorToques === 5) {
+        mostrarLogin();
+        contadorToques = 0; // Reiniciamos el contador
+    }
+    
+    // Si dejas de tocar por más de 2 segundos, el contador vuelve a cero
+    clearTimeout(temporizadorToques);
+    temporizadorToques = setTimeout(() => {
+        contadorToques = 0;
+    }, 2000);
+}
+
 // Ejecutamos la función cuando cargue el DOM
 document.addEventListener('DOMContentLoaded', inicializarMenuHamburguesa);
