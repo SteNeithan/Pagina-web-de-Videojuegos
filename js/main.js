@@ -274,8 +274,16 @@ async function enviarLoginHTML() {
 
     const datos = await respuesta.json();
 
-    if (respuesta.ok) {
-      alert("¡Acceso concedido! " + datos.mensaje);
+   if (respuesta.ok) {
+      // Alerta de éxito que se cierra sola
+      Swal.fire({
+        icon: 'success',
+        title: '¡Acceso concedido!',
+        text: datos.mensaje,
+        showConfirmButton: false,
+        timer: 2000
+      });
+      
       localStorage.setItem('tokenGamer', datos.token);
       
       document.getElementById('seccion-login-admin').style.display = 'none';
@@ -285,12 +293,13 @@ async function enviarLoginHTML() {
       cambiarVista('admin');
       
     } else {
-      alert("Acceso denegado: " + datos.error);
+      // Alerta de error animada
+      Swal.fire({ icon: 'error', title: 'Acceso denegado', text: datos.error });
     }
     
   } catch (error) {
     console.error("Error de conexión:", error);
-    alert("No se pudo conectar con el servidor.");
+    Swal.fire({ icon: 'error', title: 'Error de red', text: 'No se pudo conectar con el servidor.' });
   }
 }
 
@@ -451,7 +460,17 @@ function agregarAlCarrito(idJuego) {
   actualizarContadorCarrito();
   renderizarCarrito();
   
-  alert(`¡${juegoEncontrado.titulo} se agregó al carrito!`);
+  Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'success',
+    title: `¡${juegoEncontrado.titulo} agregado!`,
+    showConfirmButton: false,
+    timer: 2500, // Desaparece en 2.5 segundos
+    timerProgressBar: true,
+    background: '#1a1a1a', // Fondo oscuro gamer
+    color: '#ffffff' // Letras blancas
+  });
 }
 
 function actualizarContadorCarrito() {
