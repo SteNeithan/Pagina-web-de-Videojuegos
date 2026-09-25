@@ -14,7 +14,7 @@
   <meta property="og:url" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/">
   <meta property="og:title" content="Tienda de Videojuegos | Las mejores ofertas Gamer">
   <meta property="og:description" content="Explora nuestro catálogo completo de videojuegos con precios actualizados. ¡Haz tu pedido directamente por WhatsApp!">
-  <meta property="og:image" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.jpg">
+  <meta property="og:image" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.svg">
   <meta property="og:site_name" content="Tienda Gamer">
 
   <!-- Twitter Cards -->
@@ -125,8 +125,13 @@
   <!-- =========================================
        SECCIÓN: PLATAFORMAS
        ========================================= -->
+<!-- =========================================
+       SECCIÓN: PLATAFORMAS
+       ========================================= -->
   <section id="plataformas" class="vista-oculta">
     <div class="filtros-contenedor">
+      
+      <!-- Filtro de Consola -->
       <label for="filtro-plataforma">Selecciona tu consola:</label>
       <select id="filtro-plataforma" onchange="filtrarPorPlataforma()">
         <option value="todos">Todos</option>
@@ -135,7 +140,17 @@
         <option value="PC">PC</option>
         <option value="Nintendo Switch 2">Nintendo Switch 2</option>
       </select>
+
+      <!-- Filtro de Precio -->
+      <label for="filtro-orden-precio" style="margin-left: 20px;">Ordenar:</label>
+      <select id="filtro-orden-precio" class="select-filtro" onchange="ordenarPorPrecio()">
+        <option value="predeterminado">Ordenar por: Defecto</option>
+        <option value="menor-mayor">Precio: Menor a Mayor</option>
+        <option value="mayor-menor">Precio: Mayor a Menor</option>
+      </select>
+
     </div>
+    
     <div id="contenedor-juegos" class="catalogo-grid"></div>
   </section>
 
@@ -316,6 +331,13 @@
       <p>&copy; 2026 Catálogo Gamer. Todos los derechos reservados.</p>
     </div>
   </footer>
+
+  <!-- BOTÓN FLOTANTE VOLVER ARRIBA -->
+<button id="btn-volver-arriba" class="btn-volver-arriba" title="Volver arriba">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <polyline points="18 15 12 9 6 15"></polyline>
+  </svg>
+</button>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="js/main.js"></script>

@@ -26,7 +26,7 @@ async function cargarCatalogo() {
 async function cargarVistaCategorias() {
 
   mostrarEsqueletos('#contenedor-juegos', 8);
-  
+
   try {
     const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/catalogo-completo');
     catalogoCategorias = await respuesta.json();
@@ -167,6 +167,22 @@ function pintarJuegosAdmin(listaDeJuegos) {
 /* =========================================================================
    3. FILTROS Y NAVEGACIÓN (SPA)
    ========================================================================= */
+
+   function ordenarPorPrecio() {
+    const opcion = document.getElementById('filtro-orden-precio').value;
+    
+    // Hacemos una copia del catálogo para no perder el orden original
+    let juegosOrdenados = [...catalogoGlobal];
+
+    if (opcion === 'menor-mayor') {
+        juegosOrdenados.sort((a, b) => Number(a.precio) - Number(b.precio));
+    } else if (opcion === 'mayor-menor') {
+        juegosOrdenados.sort((a, b) => Number(b.precio) - Number(a.precio));
+    }
+
+    // Re-renderizamos la vista con la lista ordenada
+    pintarJuegos(juegosOrdenados);
+}
 
 function filtrarPorPlataforma() {
   const opcionElegida = document.getElementById('filtro-plataforma').value;
@@ -819,3 +835,29 @@ function mostrarEsqueletos(contenedorSelector, cantidad = 8) {
     }
     contenedor.innerHTML = HTMLSkeletons;
 }
+
+// ==========================================
+// BOTÓN VOLVER ARRIBA (SCROLL TO TOP)
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const btnVolverArriba = document.getElementById('btn-volver-arriba');
+
+    if (btnVolverArriba) {
+        // Mostrar u ocultar el botón según el desplazamiento vertical (scroll)
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) { // Aparece tras bajar 300px
+                btnVolverArriba.classList.add('visible');
+            } else {
+                btnVolverArriba.classList.remove('visible');
+            }
+        });
+
+        // Al hacer clic, sube suavemente hasta el inicio
+        btnVolverArriba.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+});
