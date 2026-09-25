@@ -3,22 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zona Gamer</title>
+    <title>Tienda de Videojuegos | Catálogo de Juegos y Consolas</title>
+  <meta name="description" content="Encuentra las mejores ofertas en videojuegos para PC, PlayStation, Xbox y Nintendo. Compra rápida y segura con entrega inmediata.">
+  <meta name="keywords" content="videojuegos, tienda de juegos, comprar juegos, PlayStation, Xbox, Nintendo, PC gaming, claves digitales">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Tu Nombre o Nombre de la Tienda">
+
+  <!-- Open Graph / WhatsApp, Facebook, Discord -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/">
+  <meta property="og:title" content="Tienda de Videojuegos | Las mejores ofertas Gamer">
+  <meta property="og:description" content="Explora nuestro catálogo completo de videojuegos con precios actualizados. ¡Haz tu pedido directamente por WhatsApp!">
+  <meta property="og:image" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.jpg">
+  <meta property="og:site_name" content="Tienda Gamer">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Tienda de Videojuegos | Las mejores ofertas Gamer">
+  <meta name="twitter:description" content="Explora nuestro catálogo completo de videojuegos con precios actualizados. ¡Haz tu pedido directamente por WhatsApp!">
+  <meta name="twitter:image" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.jpg">
     <link rel="icon" type="image/png" href="imagenes/favicon.png">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-  <!-- =========================================
-       NUEVO: BOTÓN DE HAMBURGUESA (MÓVILES)
-       =========================================
-       Este botón permanecerá invisible en PC y solo 
-       aparecerá en pantallas pequeñas gracias al CSS. -->
-  <button class="menu-hamburguesa" id="btn-hamburguesa" title="Abrir menú">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
 
   <!-- =========================================
        MENÚ DE NAVEGACIÓN PRINCIPAL
@@ -26,13 +33,47 @@
        Agregamos el id="nav-principal" 
        para que JavaScript pueda controlarlo en móviles. -->
   <nav class="menu-principal nav-principal" id="nav-principal">
-    <ul>
+    
+    <!-- LADO IZQUIERDO: Menú móvil y Buscador Minimalista -->
+    <div class="menu-izquierda" style="display: flex; align-items: center; gap: 15px; z-index: 100;">
+      <!-- Botón hamburguesa -->
+      <button class="menu-hamburguesa" id="btn-hamburguesa" title="Abrir menú">
+        <span></span><span></span><span></span>
+      </button>
+
+      <!-- NUEVO: Buscador de ESCRITORIO Minimalista -->
+      <div class="contenedor-buscador-dinamico">
+        <button id="btn-lupa" class="btn-lupa" title="Buscar">
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="8"></circle>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+  </svg>
+</button>
+        
+        <div class="envoltura-input-busqueda" id="envoltura-busqueda">
+          <input type="text" id="input-busqueda-global" placeholder="Buscar en la tienda...">
+          <button id="btn-cerrar-busqueda" class="btn-cerrar-busqueda">Cancelar</button>
+          
+          <!-- Lista de resultados flotante (Estilo Xbox) -->
+          <div id="dropdown-resultados" class="dropdown-resultados"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTRO: Enlaces anclados -->
+    <ul class="enlaces-centro">
+      <!-- Buscador MÓVIL -->
+      <li class="buscador-movil" style="position: relative;">
+        <input type="text" id="buscador-celular" placeholder="Buscar juego...">
+        <div id="dropdown-resultados-movil" class="dropdown-resultados"></div>
+      </li>
       <li><a href="#" onclick="cambiarVista('inicio')">Inicio</a></li>
       <li><a href="#" onclick="cambiarVista('categorias')">Categorías</a></li>
       <li><a href="#" onclick="cambiarVista('plataformas')">Plataformas</a></li>
     </ul>
     
-    <div class="menu-derecha">
+    <!-- LADO DERECHO: Carrito -->
+    <div class="menu-derecha" style="z-index: 100;">
       <button id="btn-carrito" onclick="cambiarVista('carrito')" class="btn-icono-nav" title="Ver Carrito">
         🛒 <span id="contador-carrito">0</span>
       </button>
@@ -193,9 +234,88 @@
         <button onclick="realizarCompraWhatsApp()" class="btn-whatsapp">
           📲 Realizar compra por WhatsApp
         </button>
+        <!-- Botón dentro de la vista del Carrito -->
+<button type="button" class="btn-ayuda-carrito" onclick="abrirModalComoComprar()">
+  ¿Cómo funciona la compra y entrega?
+</button>
       </div>
     </div>
   </section>
+
+  <!-- MODAL CÓMO COMPRAR -->
+<div id="modal-como-comprar" class="modal-overlay">
+  <div class="modal-contenido">
+    <button class="modal-cerrar" onclick="cerrarModalComoComprar()">&times;</button>
+    
+    <h3>🚀 Paso a Paso para realizar tu compra</h3>
+    
+    <div class="pasos-guia">
+      <div class="paso-item">
+        <span>1</span>
+        <div>
+          <h4>Confirma tus juegos</h4>
+          <p>Revisa la lista de tus productos y haz clic en "Proceder al Pago".</p>
+        </div>
+      </div>
+
+      <div class="paso-item">
+        <span>2</span>
+        <div>
+          <h4>Elige tu método de pago</h4>
+          <p>Aceptamos tarjetas de crédito/débito, transferencias y pagos en tiendas asociadas.</p>
+        </div>
+      </div>
+
+      <div class="paso-item">
+        <span>3</span>
+        <div>
+          <h4>Recibe tu código / acceso</h4>
+          <p>Una vez confirmado el pago, recibirás de forma inmediata las llaves de activación en WhatsApp.</p>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-entendido" onclick="cerrarModalComoComprar()">¡Entendido!</button>
+  </div>
+</div>
+
+  <!-- FOOTER / PIE DE PÁGINA -->
+  <footer class="pie-pagina">
+    <div class="contenedor-footer">
+      
+      <!-- Columna 1: Información de la tienda -->
+      <div class="footer-columna">
+        <h3 class="logo-footer">Catálogo Gamer</h3>
+        <p>Tu tienda de confianza para explorar los mejores videojuegos, consolas y accesorios de última generación.</p>
+      </div>
+
+      <!-- Columna 2: Enlaces rápidos -->
+      <div class="footer-columna">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#" onclick="cambiarVista('inicio')">Inicio</a></li>
+          <li><a href="#" onclick="cambiarVista('categorias')">Categorías</a></li>
+          <li><a href="#" onclick="cambiarVista('plataformas')">Plataformas</a></li>
+        </ul>
+      </div>
+
+      <!-- Columna 3: Redes / Contacto -->
+      <div class="footer-columna">
+        <h4>Comunidad</h4>
+        <div class="redes-sociales">
+          <a href="https://discord.gg/znAWZrFvQ" target="_blank">Discord</a>
+          <a href="https://www.instagram.com/neithanx_x/" target="_blank">Instagram</a>
+          <a href="https://www.twitch.tv/steneithan" target="_blank">Twitch</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Línea final de derechos autorales -->
+    <div class="footer-derechos">
+      <p>&copy; 2026 Catálogo Gamer. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="js/main.js"></script>

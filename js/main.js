@@ -7,6 +7,9 @@ let carritoGlobal = [];
 let indiceSlider = 0;
 
 async function cargarCatalogo() {
+
+  mostrarEsqueletos('#contenedor-juegos', 8);
+
   try {
     const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/catalogo-precios');
     catalogoGlobal = await respuesta.json();
@@ -21,6 +24,9 @@ async function cargarCatalogo() {
 }
 
 async function cargarVistaCategorias() {
+
+  mostrarEsqueletos('#contenedor-juegos', 8);
+  
   try {
     const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/catalogo-completo');
     catalogoCategorias = await respuesta.json();
@@ -651,3 +657,165 @@ function toqueSecreto() {
 
 // Ejecutamos la función cuando cargue el DOM
 document.addEventListener('DOMContentLoaded', inicializarMenuHamburguesa);
+
+// ==========================================
+// BUSCADOR MINIMALISTA Y DROPDOWN TIPO XBOX
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    const btnLupa = document.getElementById('btn-lupa');
+    const envolturaBusqueda = document.getElementById('envoltura-busqueda');
+    const inputPc = document.getElementById('input-busqueda-global');
+    const btnCerrar = document.getElementById('btn-cerrar-busqueda');
+    const dropdownPc = document.getElementById('dropdown-resultados');
+    
+    const inputCelular = document.getElementById('buscador-celular');
+    const dropdownMovil = document.getElementById('dropdown-resultados-movil');
+
+    // 1. Mostrar/Ocultar el input al presionar la lupa o cancelar
+    if (btnLupa) {
+        btnLupa.addEventListener('click', () => {
+            envolturaBusqueda.classList.add('activo');
+            inputPc.focus(); // Coloca el cursor para escribir automáticamente
+        });
+    }
+
+    if (btnCerrar) {
+        btnCerrar.addEventListener('click', () => {
+            envolturaBusqueda.classList.remove('activo');
+            inputPc.value = '';
+            dropdownPc.classList.remove('activo');
+        });
+    }
+
+    // 2. Función para crear la lista flotante de resultados
+    function renderizarDropdown(evento, contenedorDropdown) {
+        const textoBusqueda = evento.target.value.toLowerCase().trim();
+        
+        if (textoBusqueda.length === 0) {
+            contenedorDropdown.classList.remove('activo');
+            return;
+        }
+
+        // Filtramos buscando en el catalogoGlobal que viene de tu BD
+        const resultados = catalogoGlobal.filter(juego => 
+            juego.titulo.toLowerCase().includes(textoBusqueda)
+        );
+
+        contenedorDropdown.innerHTML = '';
+
+        if (resultados.length > 0) {
+            resultados.forEach(juego => {
+                const item = document.createElement('div');
+                item.classList.add('item-resultado');
+                
+                const nombreConsola = juego.juegos_plataformas || juego.consola || juego.plataforma || 'Game';
+
+                // Recreamos el estilo de la imagen: Foto cuadrada + Título + Categoría/Dispositivo
+                item.innerHTML = `
+                    <img src=".${juego.imagen_url}" alt="${juego.titulo}" onerror="this.src='./imagenes/default.png'">
+                    <div class="info-resultado">
+                        <h4>${juego.titulo}</h4>
+                        <span>${nombreConsola}</span>
+                    </div>
+                `;
+
+                // ¿Qué pasa al hacer clic en un resultado de la lista?
+                item.addEventListener('click', () => {
+                    cambiarVista('categorias'); 
+                    pintarJuegosCategorias([juego]); // Muestra solo el juego que seleccionaste
+                    
+                    // Cerramos todo
+                    contenedorDropdown.classList.remove('activo');
+                    if (envolturaBusqueda) envolturaBusqueda.classList.remove('activo');
+                    evento.target.value = '';
+                    
+                    // Cierra menú móvil si está abierto
+                    const navPrincipal = document.getElementById('nav-principal');
+                    if (navPrincipal && navPrincipal.classList.contains('active')) {
+                        document.getElementById('btn-hamburguesa').click();
+                    }
+                });
+
+                contenedorDropdown.appendChild(item);
+            });
+            contenedorDropdown.classList.add('activo');
+        } else {
+            contenedorDropdown.innerHTML = '<div style="padding: 15px; color: #9ca3af; font-size: 0.9rem;">No se encontraron juegos</div>';
+            contenedorDropdown.classList.add('activo');
+        }
+    }
+
+    // 3. ¿Qué pasa si presionan la tecla "Enter" en lugar de hacer clic?
+    function manejarEnter(evento, contenedorDropdown) {
+        if (evento.key === 'Enter') {
+            evento.preventDefault();
+            const texto = evento.target.value.toLowerCase().trim();
+            if (texto.length > 0) {
+                const resultados = catalogoGlobal.filter(juego => 
+                    juego.titulo.toLowerCase().includes(texto)
+                );
+                
+                cambiarVista('categorias');
+                pintarJuegosCategorias(resultados);
+                
+                // Cerramos paneles
+                contenedorDropdown.classList.remove('activo');
+                evento.target.blur(); // Quita el teclado del celular
+                
+                const navPrincipal = document.getElementById('nav-principal');
+                if (navPrincipal && navPrincipal.classList.contains('active')) {
+                    document.getElementById('btn-hamburguesa').click();
+                }
+            }
+        }
+    }
+
+    // 4. Asignamos los "escuchadores" a los inputs (PC y Celular)
+    if (inputPc) {
+        inputPc.addEventListener('input', (e) => renderizarDropdown(e, dropdownPc));
+        inputPc.addEventListener('keydown', (e) => manejarEnter(e, dropdownPc));
+    }
+    
+    if (inputCelular) {
+        inputCelular.addEventListener('input', (e) => renderizarDropdown(e, dropdownMovil));
+        inputCelular.addEventListener('keydown', (e) => manejarEnter(e, dropdownMovil));
+    }
+});
+
+// Abrir y cerrar Modal "Cómo Comprar"
+function abrirModalComoComprar() {
+    const modal = document.getElementById('modal-como-comprar');
+    if (modal) modal.classList.add('activo');
+}
+
+function cerrarModalComoComprar() {
+    const modal = document.getElementById('modal-como-comprar');
+    if (modal) modal.classList.remove('activo');
+}
+
+// Cerrar si hacen clic fuera de la caja del modal
+window.addEventListener('click', (e) => {
+    const modal = document.getElementById('modal-como-comprar');
+    if (e.target === modal) {
+        cerrarModalComoComprar();
+    }
+});
+
+// Función para dibujar las tarjetas de esqueleto mientras responde Render
+function mostrarEsqueletos(contenedorSelector, cantidad = 8) {
+    const contenedor = document.querySelector(contenedorSelector);
+    if (!contenedor) return;
+
+    let HTMLSkeletons = '';
+    for (let i = 0; i < cantidad; i++) {
+        HTMLSkeletons += `
+            <div class="tarjeta-skeleton">
+                <div class="skeleton-animacion skeleton-imagen"></div>
+                <div class="skeleton-animacion skeleton-titulo"></div>
+                <div class="skeleton-animacion skeleton-categoria"></div>
+                <div class="skeleton-animacion skeleton-boton"></div>
+            </div>
+        `;
+    }
+    contenedor.innerHTML = HTMLSkeletons;
+}
