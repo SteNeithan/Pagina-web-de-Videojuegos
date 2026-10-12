@@ -1,19 +1,22 @@
 /* =========================================================================
    1. VARIABLES GLOBALES Y CARGA INICIAL
    ========================================================================= */
-let catalogoGlobal = [];
-let catalogoCategorias = [];
-let carritoGlobal = [];
-let indiceSlider = 0;
+
+// URL base del backend (todas las llamadas usan esta constante)
+const API_URL = 'https://pagina-web-de-videojuegos.onrender.com';
+
+let catalogoGlobal = [];      // Catálogo completo de la vista Plataformas
+let catalogoCategorias = [];  // Catálogo con categorías (vista Categorías)
+let carritoGlobal = [];       // Productos añadidos al carrito
+let indiceSlider = 0;         // Diapositiva actual del carrusel
 
 async function cargarCatalogo() {
-
   mostrarEsqueletos('#contenedor-juegos', 8);
 
   try {
-    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/catalogo-precios');
+    const respuesta = await fetch(`${API_URL}/api/catalogo-precios`);
     catalogoGlobal = await respuesta.json();
-    
+
     pintarJuegos(catalogoGlobal);
     pintarJuegosAdmin(catalogoGlobal);
     iniciarCarrusel(catalogoGlobal);
@@ -24,13 +27,12 @@ async function cargarCatalogo() {
 }
 
 async function cargarVistaCategorias() {
-
   mostrarEsqueletos('#contenedor-juegos', 8);
 
   try {
-    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/catalogo-completo');
+    const respuesta = await fetch(`${API_URL}/api/catalogo-completo`);
     catalogoCategorias = await respuesta.json();
-    
+
     pintarJuegosCategorias(catalogoCategorias);
   } catch (error) {
     console.error('Error al cargar categorías:', error);
@@ -49,8 +51,8 @@ cargarVistaCategorias();
 function pintarJuegos(listaDeJuegos) {
   const contenedor = document.getElementById('contenedor-juegos');
   if (!contenedor) return;
-  
-  contenedor.innerHTML = ''; 
+
+  contenedor.innerHTML = '';
 
   if (!listaDeJuegos || listaDeJuegos.length === 0) {
     contenedor.innerHTML = '<p style="color: #9ca3af; text-align: center; grid-column: 1/-1;">No hay juegos disponibles.</p>';
@@ -63,7 +65,6 @@ function pintarJuegos(listaDeJuegos) {
       <div class="tarjeta-juego">
         <img src=".${juego.imagen_url || ''}" alt="${juego.titulo}">
         <div class="info-juego">
-          <!-- Aquí mandamos llamar la plataforma usando el nombre de tu BD -->
           <span class="consola">${juego.juegos_plataformas || juego.consola || juego.plataforma || 'Consola'}</span>
           <h3>${juego.titulo}</h3>
           <p class="descripcion">${juego.descripcion || 'Sin descripción disponible'}</p>
@@ -79,48 +80,37 @@ function pintarJuegos(listaDeJuegos) {
 function pintarJuegosCategorias(lista) {
   const contenedor = document.getElementById('contenedor-juegos-categorias');
   if (!contenedor) return;
-  
-  contenedor.innerHTML = ''; 
+
+  contenedor.innerHTML = '';
 
   if (!lista || lista.length === 0) {
     contenedor.innerHTML = '<p style="color: #9ca3af; text-align: center; grid-column: 1/-1;">No hay juegos en esta categoría.</p>';
     return;
   }
 
-  // --- LA LICUADORA: FUSIÓN DE CATEGORÍAS ---
-  const juegosFusionados = {}; // Usaremos un diccionario para agruparlos
+  const juegosFusionados = {};
 
   lista.forEach(juego => {
     const tituloJuego = juego.titulo.trim().toLowerCase();
     const categoriaActual = juego.categoria;
 
-    // Si es la primera vez que vemos el juego, lo registramos
     if (!juegosFusionados[tituloJuego]) {
-      // Hacemos una copia del juego y le creamos una lista vacía para sus categorías
       juegosFusionados[tituloJuego] = { ...juego, listaCategorias: [] };
-      
     }
 
-    // Rescatamos la categoría actual asegurándonos de que exista y NO sea "Todos"
     if (categoriaActual && categoriaActual.toLowerCase() !== 'todos') {
-      // Si la categoría aún no está en la lista de este juego, la agregamos
       if (!juegosFusionados[tituloJuego].listaCategorias.includes(categoriaActual)) {
         juegosFusionados[tituloJuego].listaCategorias.push(categoriaActual);
       }
     }
   });
 
-  // Convertimos el diccionario agrupado de nuevo a un arreglo normal
   const juegosUnicos = Object.values(juegosFusionados);
-  // ----------------------------------------
 
-  // Ahora dibujamos los juegos con todas sus categorías unidas
   juegosUnicos.forEach(juego => {
     const idUnico = juego.id || juego.id_juego || 1;
-    
-    // Juntamos las categorías separadas por coma. Si no tiene, ponemos 'General'
-    const textoCategorias = juego.listaCategorias.length > 0 
-                            ? juego.listaCategorias.join(', ') 
+    const textoCategorias = juego.listaCategorias.length > 0
+                            ? juego.listaCategorias.join(', ')
                             : 'General';
 
     const tarjetaHTML = `
@@ -129,7 +119,7 @@ function pintarJuegosCategorias(lista) {
         <div class="info-juego">
           <span class="consola">${juego.juegos_plataformas || juego.consola || juego.plataforma || 'Consola'}</span>
           <h3>${juego.titulo}</h3>
-          <p class="consola" style="font-size: 0.75rem;">Categorías: ${textoCategorias}</p> 
+          <p class="consola" style="font-size: 0.75rem;">Categorías: ${textoCategorias}</p>
           <p class="descripcion">${juego.descripcion || 'Sin descripción'}</p>
           <p class="precio">$${juego.precio || 'Consultar precio'}</p>
           <button onclick="agregarAlCarrito(${idUnico})" class="btn-comprar">Agregar al carrito</button>
@@ -143,8 +133,8 @@ function pintarJuegosCategorias(lista) {
 function pintarJuegosAdmin(listaDeJuegos) {
   const contenedor = document.getElementById('contenedor-admin-juegos');
   if (!contenedor) return;
-  
-  contenedor.innerHTML = ''; 
+
+  contenedor.innerHTML = '';
 
   listaDeJuegos.forEach(juego => {
     const idUnico = juego.id || juego.id_juego || 1;
@@ -161,69 +151,102 @@ function pintarJuegosAdmin(listaDeJuegos) {
     `;
     contenedor.innerHTML += tarjetaHTML;
   });
-  
 }
+
 
 /* =========================================================================
-   3. FILTROS Y NAVEGACIÓN (SPA)
+   3. FILTROS Y NAVEGACIÓN (SPA) - CHIPS Y ORDENAMIENTO
    ========================================================================= */
 
-   function ordenarPorPrecio() {
-    const opcion = document.getElementById('filtro-orden-precio').value;
-    
-    // Hacemos una copia del catálogo para no perder el orden original
-    let juegosOrdenados = [...catalogoGlobal];
-
-    if (opcion === 'menor-mayor') {
-        juegosOrdenados.sort((a, b) => Number(a.precio) - Number(b.precio));
-    } else if (opcion === 'mayor-menor') {
-        juegosOrdenados.sort((a, b) => Number(b.precio) - Number(a.precio));
-    }
-
-    // Re-renderizamos la vista con la lista ordenada
-    pintarJuegos(juegosOrdenados);
+// 1. Activar el chip de plataforma seleccionado y filtrar
+function seleccionarChip(elementoBtn, valorPlataforma) {
+  const grupoPlataforma = elementoBtn.closest('.filtro-grupo-limpio');
+  if (grupoPlataforma) {
+    const chips = grupoPlataforma.querySelectorAll('.chip-btn');
+    chips.forEach(chip => chip.classList.remove('activo'));
+  }
+  
+  elementoBtn.classList.add('activo');
+  
+  const selectOculto = document.getElementById('filtro-plataforma');
+  if (selectOculto) {
+    selectOculto.value = valorPlataforma;
+    aplicarFiltrosPlataforma();
+  }
 }
 
-function filtrarPorPlataforma() {
-  const opcionElegida = document.getElementById('filtro-plataforma').value;
-  
-  if (opcionElegida === 'todos') {
-    pintarJuegos(catalogoGlobal);
-  } else {
-    const juegosFiltrados = catalogoGlobal.filter(
-      juego => {
-        // Se asegura de buscar en las diferentes formas en las que puede venir la consola
-        const consolaJuego = juego.juegos_plataformas || juego.consola || juego.plataforma || '';
-        return consolaJuego.toLowerCase() === opcionElegida.toLowerCase();
-      }
-    );
-    pintarJuegos(juegosFiltrados);
+// 2. Activar el botón de orden por precio seleccionado
+function seleccionarOrden(elementoBtn, valorOrden) {
+  const grupoOrden = document.getElementById('grupo-orden-chips');
+  if (grupoOrden) {
+    const botonesOrden = grupoOrden.querySelectorAll('.chip-btn:not(.btn-limpiar-orden)');
+    botonesOrden.forEach(btn => btn.classList.remove('activo'));
   }
+  elementoBtn.classList.add('activo');
+  
+  const selectOculto = document.getElementById('filtro-orden-precio');
+  if (selectOculto) {
+    selectOculto.value = valorOrden;
+    aplicarFiltrosPlataforma();
+  }
+}
+
+// 3. Quitar el filtro de orden al presionar la 'X'
+function limpiarOrden() {
+  const grupoOrden = document.getElementById('grupo-orden-chips');
+  if (grupoOrden) {
+    const botonesOrden = grupoOrden.querySelectorAll('.chip-btn:not(.btn-limpiar-orden)');
+    botonesOrden.forEach(btn => btn.classList.remove('activo'));
+  }
+  
+  const selectOculto = document.getElementById('filtro-orden-precio');
+  if (selectOculto) {
+    selectOculto.value = 'predeterminado';
+    aplicarFiltrosPlataforma();
+  }
+}
+
+// 4. Función unificada que aplica ambos filtros simultáneamente
+function aplicarFiltrosPlataforma() {
+  const plataformaElegida = document.getElementById('filtro-plataforma').value;
+  const ordenElegido = document.getElementById('filtro-orden-precio').value;
+
+  let juegosResultado = [...catalogoGlobal];
+
+  // Filtrar por consola
+  if (plataformaElegida && plataformaElegida !== 'todos') {
+    juegosResultado = juegosResultado.filter(juego => {
+      const consolaJuego = juego.juegos_plataformas || juego.consola || juego.plataforma || '';
+      return consolaJuego.toLowerCase() === plataformaElegida.toLowerCase();
+    });
+  }
+
+  // Ordenar por precio sobre el resultado filtrado
+  if (ordenElegido === 'menor-mayor') {
+    juegosResultado.sort((a, b) => Number(a.precio) - Number(b.precio));
+  } else if (ordenElegido === 'mayor-menor') {
+    juegosResultado.sort((a, b) => Number(b.precio) - Number(a.precio));
+  }
+
+  // Pintar los juegos en pantalla
+  pintarJuegos(juegosResultado);
 }
 
 function filtrarPorCategoria(categoriaElegida) {
   if (categoriaElegida === 'Todos') {
-    // 1. Creamos una memoria para recordar qué juegos ya vimos
     const juegosUnicos = [];
     const idsVistos = new Set();
 
-    // 2. Revisamos todo el catálogo paso a paso
     catalogoCategorias.forEach(juego => {
-      // Obtenemos su ID único exactamente como lo tienes en tu código
       const idUnico = juego.id || juego.id_juego || 1;
-      
-      // Si no hemos visto este ID, lo agregamos a la lista final
       if (!idsVistos.has(idUnico)) {
         idsVistos.add(idUnico);
         juegosUnicos.push(juego);
       }
     });
 
-    // 3. Pintamos solo los juegos únicos
     pintarJuegosCategorias(juegosUnicos);
-    
   } else {
-    // Si elige una categoría específica (como Acción o Terror), filtramos normal
     const filtrados = catalogoCategorias.filter(
       juego => juego.categoria && juego.categoria.toLowerCase() === categoriaElegida.toLowerCase()
     );
@@ -240,22 +263,22 @@ function cambiarVista(nombreVista) {
   });
 
   let vistaAMostrar = null;
-  
+
   if (nombreVista === 'inicio') {
     vistaAMostrar = document.getElementById('inicio');
-  } 
+  }
   else if (nombreVista === 'catalogo' || nombreVista === 'categorias') {
     vistaAMostrar = document.getElementById('categorias');
-    pintarJuegosCategorias(catalogoCategorias); 
-  } 
+    pintarJuegosCategorias(catalogoCategorias);
+  }
   else if (nombreVista === 'plataformas') {
     vistaAMostrar = document.getElementById('plataformas');
-    pintarJuegos(catalogoGlobal); 
-  } 
+    pintarJuegos(catalogoGlobal);
+  }
   else if (nombreVista === 'carrito') {
     vistaAMostrar = document.getElementById('vista-carrito');
     renderizarCarrito();
-  } 
+  }
   else if (nombreVista === 'admin') {
     vistaAMostrar = document.getElementById('admin');
   }
@@ -278,6 +301,13 @@ function mostrarLogin() {
   }
 }
 
+function cerrarLogin() {
+  const modalLogin = document.getElementById('seccion-login-admin');
+  if (modalLogin) {
+    modalLogin.style.display = 'none';
+  }
+}
+
 async function enviarLoginHTML() {
   const usuarioForm = document.getElementById('admin-usuario').value;
   const passwordForm = document.getElementById('admin-password').value;
@@ -288,39 +318,37 @@ async function enviarLoginHTML() {
   }
 
   try {
-    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/login', {
+    const respuesta = await fetch(`${API_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ usuario: usuarioForm, password: passwordForm }) 
+      body: JSON.stringify({ usuario: usuarioForm, password: passwordForm })
     });
 
     const datos = await respuesta.json();
 
-   if (respuesta.ok) {
-      // Alerta de éxito que se cierra sola
+    if (respuesta.ok) {
       Swal.fire({
         icon: 'success',
         title: '¡Acceso concedido!',
         text: datos.mensaje,
         showConfirmButton: false,
         timer: 2000,
-        background: '#1a1a1a', 
+        background: '#1a1a1a',
         color: '#ffffff'
       });
-      
+
       localStorage.setItem('tokenGamer', datos.token);
-      
+
       document.getElementById('seccion-login-admin').style.display = 'none';
       document.getElementById('admin-usuario').value = '';
       document.getElementById('admin-password').value = '';
 
       cambiarVista('admin');
-      
+
     } else {
-      // Alerta de error animada
       Swal.fire({ icon: 'error', title: 'Acceso denegado', text: datos.error, background: '#1a1a1a', color: '#ffffff' });
     }
-    
+
   } catch (error) {
     console.error("Error de conexión:", error);
     Swal.fire({ icon: 'error', title: 'Error de red', text: 'No se pudo conectar con el servidor.', background: '#1a1a1a', color: '#ffffff' });
@@ -332,9 +360,20 @@ async function enviarLoginHTML() {
    5. PANEL DE ADMINISTRACIÓN
    ========================================================================= */
 
-/* =========================================================================
-   5. PANEL DE ADMINISTRACIÓN
-   ========================================================================= */
+// Función para filtrar los juegos en el panel de administración
+function filtrarAdmin(evento) {
+  const textoBusqueda = evento.target.value.toLowerCase().trim();
+
+  if (!catalogoGlobal) return;
+
+  // Filtramos sobre el catálogo global
+  const juegosFiltrados = catalogoGlobal.filter(juego =>
+    juego.titulo.toLowerCase().includes(textoBusqueda)
+  );
+
+  // Pintamos únicamente los resultados coincidentes en la sección admin
+  pintarJuegosAdmin(juegosFiltrados);
+}
 
 async function guardarNuevoJuego(event) {
   event.preventDefault();
@@ -347,7 +386,7 @@ async function guardarNuevoJuego(event) {
 
   const selectCategorias = document.getElementById('nuevas-categorias');
   const categoriasSeleccionadas = [];
-  
+
   if (selectCategorias) {
     for (let i = 0; i < selectCategorias.options.length; i++) {
       if (selectCategorias.options[i].selected) {
@@ -365,17 +404,17 @@ async function guardarNuevoJuego(event) {
     titulo: document.getElementById('nuevo-titulo').value,
     descripcion: document.getElementById('nueva-descripcion').value,
     imagen_url: document.getElementById('nueva-imagen').value,
-    precio: parseFloat(document.getElementById('nuevo-precio').value), 
+    precio: parseFloat(document.getElementById('nuevo-precio').value),
     consola: document.getElementById('nueva-plataforma').value,
-    categorias: categoriasSeleccionadas 
+    categorias: categoriasSeleccionadas
   };
 
   try {
-    const respuesta = await fetch('https://pagina-web-de-videojuegos.onrender.com/api/juegos', {
+    const respuesta = await fetch(`${API_URL}/api/juegos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token 
+        'Authorization': 'Bearer ' + token
       },
       body: JSON.stringify(nuevoJuego)
     });
@@ -390,7 +429,7 @@ async function guardarNuevoJuego(event) {
     } else {
       Swal.fire({ icon: 'error', title: 'Error', text: datos.error, background: '#1a1a1a', color: '#ffffff' });
     }
-    
+
   } catch (error) {
     console.error("Error al intentar guardar:", error);
     Swal.fire({ icon: 'error', title: 'Error de red', text: 'No se pudo conectar con el servidor.', background: '#1a1a1a', color: '#ffffff' });
@@ -399,20 +438,19 @@ async function guardarNuevoJuego(event) {
 
 async function eliminarVideojuegoPorId(idJuego) {
   const token = localStorage.getItem('tokenGamer');
-  
+
   if (!token) {
     Swal.fire({ icon: 'error', title: '¡Alto ahí!', text: 'No tienes permiso para realizar esta acción.', background: '#1a1a1a', color: '#ffffff' });
     return;
   }
 
- 
   const confirmacion = await Swal.fire({
     title: '¿Estás seguro?',
     text: `Se eliminará el juego con ID: ${idJuego} para siempre.`,
     icon: 'warning',
     showCancelButton: true,
-    confirmButtonColor: '#dc3545', // Botón rojo
-    cancelButtonColor: '#6c757d',  // Botón gris
+    confirmButtonColor: '#dc3545',
+    cancelButtonColor: '#6c757d',
     confirmButtonText: 'Sí, eliminar',
     cancelButtonText: 'Cancelar',
     background: '#1a1a1a',
@@ -420,11 +458,11 @@ async function eliminarVideojuegoPorId(idJuego) {
   });
 
   if (!confirmacion.isConfirmed) {
-    return; // Si elige cancelar, se detiene el proceso
+    return;
   }
 
   try {
-    const respuesta = await fetch(`https://pagina-web-de-videojuegos.onrender.com/api/juegos/${idJuego}`, {
+    const respuesta = await fetch(`${API_URL}/api/juegos/${idJuego}`, {
       method: 'DELETE',
       headers: { 'Authorization': 'Bearer ' + token }
     });
@@ -490,6 +528,7 @@ function iniciarCarrusel(listaJuegos) {
   }, 4000);
 }
 
+
 /* =========================================================================
    7. GESTIÓN DEL CARRITO Y WHATSAPP
    ========================================================================= */
@@ -501,17 +540,17 @@ function agregarAlCarrito(idJuego) {
   carritoGlobal.push(juegoEncontrado);
   actualizarContadorCarrito();
   renderizarCarrito();
-  
+
   Swal.fire({
     toast: true,
     position: 'top-end',
     icon: 'success',
     title: `¡${juegoEncontrado.titulo} agregado!`,
     showConfirmButton: false,
-    timer: 2500, // Desaparece en 2.5 segundos
+    timer: 2500,
     timerProgressBar: true,
-    background: '#1a1a1a', // Fondo oscuro gamer
-    color: '#ffffff' // Letras blancas
+    background: '#1a1a1a',
+    color: '#ffffff'
   });
 }
 
@@ -566,7 +605,7 @@ function realizarCompraWhatsApp() {
       icon: 'info',
       title: 'Tu carrito está vacío',
       text: 'Explora el catálogo y agrega al menos un juego para continuar.',
-      background: '#1a1a1a', 
+      background: '#1a1a1a',
       color: '#ffffff',
       confirmButtonColor: '#28a745',
       confirmButtonText: 'Entendido'
@@ -585,113 +624,93 @@ function realizarCompraWhatsApp() {
 
   mensaje += `%0A%0A*Total a pagar: $${total.toFixed(2)}*%0AQuedo a la espera de las instrucciones de pago!.`;
 
-  const numeroWhatsApp = "524922686525"; 
+  const numeroWhatsApp = "524922686525";
   const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
 
   window.open(urlWhatsApp, '_blank');
 }
 
-// =========================================
 // LÓGICA DEL MENÚ DE HAMBURGUESA
-// =========================================
 function inicializarMenuHamburguesa() {
     const btnHamburguesa = document.getElementById('btn-hamburguesa');
     const navPrincipal = document.getElementById('nav-principal');
     const overlay = document.getElementById('overlay-menu');
-    const linksMenu = document.querySelectorAll('#nav-principal a'); // Todos los links
+    const linksMenu = document.querySelectorAll('#nav-principal a');
 
-    // Función que alterna las clases 'active'
     function toggleMenu() {
         btnHamburguesa.classList.toggle('active');
         navPrincipal.classList.toggle('active');
         overlay.classList.toggle('active');
-        
-        // Evita que la página principal se mueva de fondo cuando el menú está abierto
         document.body.classList.toggle('no-scroll');
     }
 
-    // 1. Clic en el botón de hamburguesa
-    btnHamburguesa.addEventListener('click', toggleMenu);
+    if (btnHamburguesa) btnHamburguesa.addEventListener('click', toggleMenu);
+    if (overlay) overlay.addEventListener('click', toggleMenu);
 
-    // 2. Clic en la capa oscura (cierra el menú)
-    overlay.addEventListener('click', toggleMenu);
-
-    // 3. Clic en cualquier link del menú (cierra el menú para ir a la sección)
     linksMenu.forEach(link => {
         link.addEventListener('click', () => {
-            // Solo si el menú está abierto (tiene la clase active)
-            if (navPrincipal.classList.contains('active')) {
+            if (navPrincipal && navPrincipal.classList.contains('active')) {
                 toggleMenu();
             }
         });
     });
 }
 
+
 /* =========================================================================
-   8. ACCESO SECRETO DE ADMINISTRADOR (EASTER EGG)
+   8. ACCESO SECRETO DE ADMINISTRADOR Y UTILIDADES
    ========================================================================= */
 
-// --- MÉTODO 1: PARA COMPUTADORA (TECLADO) ---
 let secuenciaTeclas = '';
-const palabraSecreta = 'admin'; // Esta es la palabra que debes teclear
+const palabraSecreta = 'admin';
 
 document.addEventListener('keydown', (evento) => {
-    // Vamos guardando las letras que presionas
     secuenciaTeclas += evento.key.toLowerCase();
-    
-    // Mantenemos la cadena corta para no saturar la memoria
+
     if (secuenciaTeclas.length > 10) {
         secuenciaTeclas = secuenciaTeclas.slice(-10);
     }
-    
-    // Si la cadena contiene "admin", abrimos el modal
+
     if (secuenciaTeclas.includes(palabraSecreta)) {
         mostrarLogin();
-        secuenciaTeclas = ''; // Reiniciamos la secuencia
+        secuenciaTeclas = '';
     }
 });
 
-// --- MÉTODO 2: PARA CELULARES (TOQUES TÁCTILES) ---
 let contadorToques = 0;
 let temporizadorToques;
 
 function toqueSecreto() {
     contadorToques++;
-    
-    // Si tocas el título 5 veces seguidas, se abre el modal
+
     if (contadorToques === 5) {
         mostrarLogin();
-        contadorToques = 0; // Reiniciamos el contador
+        contadorToques = 0;
     }
-    
-    // Si dejas de tocar por más de 2 segundos, el contador vuelve a cero
+
     clearTimeout(temporizadorToques);
     temporizadorToques = setTimeout(() => {
         contadorToques = 0;
     }, 2000);
 }
 
-// Ejecutamos la función cuando cargue el DOM
 document.addEventListener('DOMContentLoaded', inicializarMenuHamburguesa);
 
-// ==========================================
 // BUSCADOR MINIMALISTA Y DROPDOWN TIPO XBOX
-// ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     const btnLupa = document.getElementById('btn-lupa');
     const envolturaBusqueda = document.getElementById('envoltura-busqueda');
     const inputPc = document.getElementById('input-busqueda-global');
     const btnCerrar = document.getElementById('btn-cerrar-busqueda');
     const dropdownPc = document.getElementById('dropdown-resultados');
-    
+
     const inputCelular = document.getElementById('buscador-celular');
     const dropdownMovil = document.getElementById('dropdown-resultados-movil');
 
-    // 1. Mostrar/Ocultar el input al presionar la lupa o cancelar
     if (btnLupa) {
         btnLupa.addEventListener('click', () => {
             envolturaBusqueda.classList.add('activo');
-            inputPc.focus(); // Coloca el cursor para escribir automáticamente
+            inputPc.focus();
         });
     }
 
@@ -703,17 +722,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Función para crear la lista flotante de resultados
     function renderizarDropdown(evento, contenedorDropdown) {
         const textoBusqueda = evento.target.value.toLowerCase().trim();
-        
+
         if (textoBusqueda.length === 0) {
             contenedorDropdown.classList.remove('activo');
             return;
         }
 
-        // Filtramos buscando en el catalogoGlobal que viene de tu BD
-        const resultados = catalogoGlobal.filter(juego => 
+        const resultados = catalogoGlobal.filter(juego =>
             juego.titulo.toLowerCase().includes(textoBusqueda)
         );
 
@@ -723,10 +740,9 @@ document.addEventListener('DOMContentLoaded', () => {
             resultados.forEach(juego => {
                 const item = document.createElement('div');
                 item.classList.add('item-resultado');
-                
+
                 const nombreConsola = juego.juegos_plataformas || juego.consola || juego.plataforma || 'Game';
 
-                // Recreamos el estilo de la imagen: Foto cuadrada + Título + Categoría/Dispositivo
                 item.innerHTML = `
                     <img src=".${juego.imagen_url}" alt="${juego.titulo}" onerror="this.src='./imagenes/default.png'">
                     <div class="info-resultado">
@@ -735,17 +751,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
 
-                // ¿Qué pasa al hacer clic en un resultado de la lista?
                 item.addEventListener('click', () => {
-                    cambiarVista('categorias'); 
-                    pintarJuegosCategorias([juego]); // Muestra solo el juego que seleccionaste
-                    
-                    // Cerramos todo
+                    cambiarVista('categorias');
+                    pintarJuegosCategorias([juego]);
+
                     contenedorDropdown.classList.remove('activo');
                     if (envolturaBusqueda) envolturaBusqueda.classList.remove('activo');
                     evento.target.value = '';
-                    
-                    // Cierra menú móvil si está abierto
+
                     const navPrincipal = document.getElementById('nav-principal');
                     if (navPrincipal && navPrincipal.classList.contains('active')) {
                         document.getElementById('btn-hamburguesa').click();
@@ -761,23 +774,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 3. ¿Qué pasa si presionan la tecla "Enter" en lugar de hacer clic?
     function manejarEnter(evento, contenedorDropdown) {
         if (evento.key === 'Enter') {
             evento.preventDefault();
             const texto = evento.target.value.toLowerCase().trim();
             if (texto.length > 0) {
-                const resultados = catalogoGlobal.filter(juego => 
+                const resultados = catalogoGlobal.filter(juego =>
                     juego.titulo.toLowerCase().includes(texto)
                 );
-                
+
                 cambiarVista('categorias');
                 pintarJuegosCategorias(resultados);
-                
-                // Cerramos paneles
+
                 contenedorDropdown.classList.remove('activo');
-                evento.target.blur(); // Quita el teclado del celular
-                
+                evento.target.blur();
+
                 const navPrincipal = document.getElementById('nav-principal');
                 if (navPrincipal && navPrincipal.classList.contains('active')) {
                     document.getElementById('btn-hamburguesa').click();
@@ -786,19 +797,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 4. Asignamos los "escuchadores" a los inputs (PC y Celular)
     if (inputPc) {
         inputPc.addEventListener('input', (e) => renderizarDropdown(e, dropdownPc));
         inputPc.addEventListener('keydown', (e) => manejarEnter(e, dropdownPc));
     }
-    
+
     if (inputCelular) {
         inputCelular.addEventListener('input', (e) => renderizarDropdown(e, dropdownMovil));
         inputCelular.addEventListener('keydown', (e) => manejarEnter(e, dropdownMovil));
     }
 });
 
-// Abrir y cerrar Modal "Cómo Comprar"
+// Modal "Cómo Comprar"
 function abrirModalComoComprar() {
     const modal = document.getElementById('modal-como-comprar');
     if (modal) modal.classList.add('activo');
@@ -809,7 +819,6 @@ function cerrarModalComoComprar() {
     if (modal) modal.classList.remove('activo');
 }
 
-// Cerrar si hacen clic fuera de la caja del modal
 window.addEventListener('click', (e) => {
     const modal = document.getElementById('modal-como-comprar');
     if (e.target === modal) {
@@ -817,7 +826,7 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Función para dibujar las tarjetas de esqueleto mientras responde Render
+// Skeletons de carga
 function mostrarEsqueletos(contenedorSelector, cantidad = 8) {
     const contenedor = document.querySelector(contenedorSelector);
     if (!contenedor) return;
@@ -836,23 +845,19 @@ function mostrarEsqueletos(contenedorSelector, cantidad = 8) {
     contenedor.innerHTML = HTMLSkeletons;
 }
 
-// ==========================================
-// BOTÓN VOLVER ARRIBA (SCROLL TO TOP)
-// ==========================================
+// Botón volver arriba
 document.addEventListener('DOMContentLoaded', () => {
     const btnVolverArriba = document.getElementById('btn-volver-arriba');
 
     if (btnVolverArriba) {
-        // Mostrar u ocultar el botón según el desplazamiento vertical (scroll)
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) { // Aparece tras bajar 300px
+            if (window.scrollY > 300) {
                 btnVolverArriba.classList.add('visible');
             } else {
                 btnVolverArriba.classList.remove('visible');
             }
         });
 
-        // Al hacer clic, sube suavemente hasta el inicio
         btnVolverArriba.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,

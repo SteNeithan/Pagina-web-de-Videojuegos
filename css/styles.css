@@ -1,16 +1,30 @@
 /* =========================================================================
    1. CONFIGURACIÓN GENERAL Y ESTILOS BASE
    ========================================================================= */
+:root {
+  --color-fondo: #0b0f19;         /* Fondo principal (azul muy oscuro) */
+  --color-panel: #111827;         /* Cajas, menú y tarjetas */
+  --color-borde: #1f2937;         /* Bordes sutiles */
+  --color-borde-fuerte: #374151;  /* Bordes de inputs y botones */
+  --color-texto: #e2e8f0;         /* Texto principal */
+  --color-texto-suave: #9ca3af;   /* Texto secundario */
+  --color-acento: #34d399;        /* Verde de acento (precios, hover, éxito) */
+  --color-rojo: #e74c3c;          /* Rojo principal (comprar, contador) */
+  --color-rojo-hover: #dc2626;    /* Rojo al pasar el cursor */
+  --color-rojo-eliminar: #ef4444; /* Botón eliminar del carrito */
+  --color-verde-guardar: #10b981; /* Botón guardar / hover de acento */
+  --color-whatsapp: #25d366;      /* Verde oficial de WhatsApp */
+}
+
 body {
-  background-color: #0b0f19; /* Fondo oscuro global */
-  color: #e2e8f0;            /* Texto claro legible */
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Aplica box-sizing a todos los elementos para evitar desbordamientos */
 *, *::before, *::after {
   box-sizing: inherit;
 }
@@ -18,19 +32,18 @@ body {
 /* =========================================================================
    2. MENÚ DE NAVEGACIÓN PRINCIPAL (ESCRITORIO)
    ========================================================================= */
-.menu-principal, 
+.menu-principal,
 .nav-principal {
-  background-color: #111827;
+  background-color: var(--color-panel);
   padding: 15px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #1f2937;
+  border-bottom: 1px solid var(--color-borde);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   position: relative;
 }
 
-/* Lista horizontal de navegación */
 .menu-principal ul,
 .nav-principal ul {
   list-style: none;
@@ -40,10 +53,9 @@ body {
   gap: 40px;
 }
 
-/* Estilos de los enlaces individuales */
 .menu-principal a,
 .nav-principal a {
-  color: #9ca3af;
+  color: var(--color-texto-suave);
   text-decoration: none;
   font-size: 1.05rem;
   font-weight: 600;
@@ -52,28 +64,32 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Estado activo y hover de enlaces */
-.menu-principal a:hover, 
+.menu-principal a:hover,
 .menu-principal a.active,
-.nav-principal a:hover, 
+.nav-principal a:hover,
 .nav-principal a.active {
   color: #ffffff;
-  background-color: #1f2937;
+  background-color: var(--color-borde);
 }
 
-/* Contenedor derecho para iconos de carrito y administración */
 .menu-derecha {
   display: flex;
   align-items: center;
   gap: 15px;
 }
 
-/* Botones circulares con icono en la barra superior */
+.menu-izquierda {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 100;
+}
+
 .btn-admin-icono,
 .btn-icono-nav {
   background-color: #000000;
   color: #ffffff;
-  border: 1px solid #374151;
+  border: 1px solid var(--color-borde-fuerte);
   width: 42px;
   height: 42px;
   border-radius: 50%;
@@ -89,17 +105,16 @@ body {
 
 .btn-admin-icono:hover,
 .btn-icono-nav:hover {
-  background-color: #1f2937;
-  border-color: #e74c3c;
+  background-color: var(--color-borde);
+  border-color: var(--color-rojo);
   transform: scale(1.05);
 }
 
-/* Indicador numérico flotante en el carrito */
 #contador-carrito {
   position: absolute;
   top: -5px;
   right: -5px;
-  background-color: #e74c3c;
+  background-color: var(--color-rojo);
   color: white;
   font-size: 0.75rem;
   font-weight: bold;
@@ -107,7 +122,6 @@ body {
   border-radius: 50%;
 }
 
-/* Botón Hamburguesa Móvil (oculto en escritorio) */
 .menu-hamburguesa {
   display: none;
   background: none;
@@ -126,7 +140,6 @@ body {
   transition: all 0.3s ease-in-out;
 }
 
-/* Capa de fondo oscuro detrás del menú lateral desplegado */
 .overlay-menu {
   position: fixed;
   top: 0;
@@ -141,18 +154,15 @@ body {
 /* =========================================================================
    3. CONTROL DE VISTAS (SINGLE PAGE APPLICATION - SPA)
    ========================================================================= */
-/* Oculta secciones no activas */
 .vista-oculta {
   display: none !important;
 }
 
-/* Muestra sección activa con animación suave */
 .vista-activa {
   display: block;
   animation: aparecerArriba 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Permite que la sección de Inicio conserve su estructura Flexbox */
 section#inicio.vista-activa {
   display: flex !important;
 }
@@ -163,13 +173,13 @@ section#inicio.vista-activa {
 }
 
 /* =========================================================================
-   4. SECCIÓN INICIO / HERO
+   4. SECCIÓN INICIO / HERO Y CARRUSEL
    ========================================================================= */
 .seccion-inicio-compacta {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-height: calc(100vh - 75px); 
+  min-height: calc(100vh - 75px);
   padding: 30px 20px;
   width: 100%;
 }
@@ -180,9 +190,6 @@ section#inicio.vista-activa {
   margin: 0;
 }
 
-/* =========================================================================
-   5. CARRUSEL DE DESTACADOS
-   ========================================================================= */
 .caja-carrusel-destacados {
   flex-grow: 1;
   display: flex;
@@ -212,13 +219,13 @@ section#inicio.vista-activa {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center; 
-  gap: 40px; 
+  justify-content: center;
+  gap: 40px;
   padding: 0 20px;
 }
 
 .info-slider {
-  width: 350px; 
+  width: 350px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -235,7 +242,7 @@ section#inicio.vista-activa {
 
 .info-slider p {
   font-size: 0.9rem;
-  color: #9ca3af;
+  color: var(--color-texto-suave);
   margin-bottom: 15px;
   line-height: 1.4;
   display: -webkit-box;
@@ -246,7 +253,7 @@ section#inicio.vista-activa {
 }
 
 .imagen-slider-container {
-  width: 300px; 
+  width: 300px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -262,25 +269,24 @@ section#inicio.vista-activa {
 }
 
 /* =========================================================================
-   6. CAJA DE INSTRUCCIONES ("¿CÓMO COMPRAR?")
+   5. CAJA DE INSTRUCCIONES ("¿CÓMO COMPRAR?")
    ========================================================================= */
 .instrucciones-limpias {
   text-align: center;
   font-size: 0.95rem;
-  color: #e2e8f0;
-  background: rgba(229, 9, 20, 0.08); /* Fondo tinte rojo */
+  color: var(--color-texto);
+  background: rgba(229, 9, 20, 0.08);
   padding: 14px 25px;
   border-radius: 20px;
-  border: 1px solid rgba(229, 9, 20, 0.4); /* Borde rojo */
-  box-shadow: 0 0 15px rgba(229, 9, 20, 0.2); /* Resplandor */
+  border: 1px solid rgba(229, 9, 20, 0.4);
+  box-shadow: 0 0 15px rgba(229, 9, 20, 0.2);
   width: 90%;
   max-width: 900px;
   margin: 20px auto 0 auto;
 }
 
-/* Palpitación dinámica para la frase en negrita */
 .instrucciones-limpias strong {
-  color: #ff3333; /* Rojo llamativo */
+  color: var(--color-rojo);
   font-size: 1.05rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -289,33 +295,27 @@ section#inicio.vista-activa {
 }
 
 @keyframes pulso-texto-rojo {
-  0%, 100% {
-    transform: scale(1);
-    text-shadow: 0 0 5px rgba(255, 51, 51, 0.5);
-  }
-  50% {
-    transform: scale(1.08);
-    text-shadow: 0 0 15px rgba(255, 51, 51, 0.9);
-  }
+  0%, 100% { transform: scale(1); text-shadow: 0 0 5px rgba(255, 51, 51, 0.5); }
+  50% { transform: scale(1.08); text-shadow: 0 0 15px rgba(255, 51, 51, 0.9); }
 }
 
 /* =========================================================================
-   7. CATÁLOGO Y TARJETAS DE JUEGOS
+   6. CATÁLOGO Y TARJETAS DE JUEGOS
    ========================================================================= */
 .catalogo-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 25px;
   padding: 40px;
-  background-color: #0b0f19;
+  background-color: var(--color-fondo);
 }
 
 .tarjeta-juego {
-  background-color: #111827; 
+  background-color: var(--color-panel);
   border-radius: 14px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
   overflow: hidden;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--color-borde);
   transition: all 0.3s ease;
   display: flex;
   flex-direction: column;
@@ -325,7 +325,7 @@ section#inicio.vista-activa {
 
 .tarjeta-juego:hover {
   transform: translateY(-6px);
-  border-color: #374151;
+  border-color: var(--color-borde-fuerte);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
 }
 
@@ -351,7 +351,7 @@ section#inicio.vista-activa {
 }
 
 .consola {
-  color: #9ca3af; 
+  color: var(--color-texto-suave);
   font-size: 0.85rem;
   margin-bottom: 8px;
   text-transform: uppercase;
@@ -359,14 +359,14 @@ section#inicio.vista-activa {
 }
 
 .info-juego .precio {
-  color: #34d399; 
+  color: var(--color-acento);
   font-size: 1.4rem;
   font-weight: 800;
-  margin-top: auto; 
+  margin-top: auto;
 }
 
 .btn-comprar {
-  background-color: #e74c3c;
+  background-color: var(--color-rojo);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -375,55 +375,93 @@ section#inicio.vista-activa {
   width: 100%;
   font-weight: 700;
   font-size: 0.95rem;
-  margin-top: 15px; 
+  margin-top: 15px;
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .btn-comprar:hover {
-  background-color: #dc2626;
+  background-color: var(--color-rojo-hover);
 }
 
+
 /* =========================================================================
-   8. FILTROS Y CATEGORÍAS (ACTUALIZADO Y ALINEADO)
+   7. PANEL DE FILTROS LIMPIO (EN LÍNEA EN PC / CENTRADO Y MULTILÍNEA EN MÓVIL)
    ========================================================================= */
-.filtros-contenedor {
+.filtros-panel-limpio {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 15px 25px;
-  margin-top: 40px;
-  margin-bottom: 30px;
+  gap: 25px;
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 10px 20px;
+  max-width: 1200px;
+  margin: 30px auto 10px auto;
+  box-sizing: border-box;
 }
 
-.filtros-contenedor label {
-  font-size: 1.05rem;
+.filtro-grupo-limpio {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: nowrap; /* En PC se mantiene ordenado horizontalmente */
+}
+
+.chips-plataformas {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap; /* En PC no se rompen de línea */
+  align-items: center;
+}
+
+/* Estilo unificado idéntico a categorías (píldora de 30px) */
+.chip-btn {
+  background-color: var(--color-panel);
+  color: var(--color-texto-suave);
+  border: 1px solid var(--color-borde);
+  padding: 9px 20px;
+  border-radius: 30px;
+  font-size: 0.9rem;
   font-weight: 600;
-  color: #9ca3af;
-  margin: 0;
-}
-
-/* Aplica exactamente las mismas dimensiones a todos los selectores */
-.filtros-contenedor select,
-.select-filtro {
-  width: 220px; /* Ancho idéntico fijo */
-  padding: 10px 16px;
-  font-size: 0.95rem;
-  border-radius: 8px;
-  border: 1px solid #374151;
-  background-color: #111827;
-  color: #ffffff;
   cursor: pointer;
-  outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
-.filtros-contenedor select:hover,
-.filtros-contenedor select:focus,
-.select-filtro:hover,
-.select-filtro:focus {
-  border-color: #34d399; /* Resplandor al pasar el cursor o hacer click */
-  box-shadow: 0 0 10px rgba(52, 211, 153, 0.2);
+.chip-btn:hover {
+  background-color: var(--color-borde);
+  color: #ffffff;
+}
+
+.chip-btn.activo {
+  background-color: var(--color-borde-fuerte);
+  color: #ffffff;
+  border-color: var(--color-texto-suave);
+  font-weight: 700;
+}
+
+/* Botón 'X' circular para limpiar el orden */
+.btn-limpiar-orden {
+  padding: 0;
+  background-color: rgba(231, 76, 60, 0.1);
+  border-color: rgba(231, 76, 60, 0.3);
+  color: #e74c3c;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btn-limpiar-orden:hover {
+  background-color: #e74c3c;
+  color: #ffffff;
+  border-color: #e74c3c;
 }
 
 .botones-categorias {
@@ -436,9 +474,9 @@ section#inicio.vista-activa {
 }
 
 .botones-categorias button {
-  background-color: #111827;
-  color: #9ca3af;
-  border: 1px solid #1f2937;
+  background-color: var(--color-panel);
+  color: var(--color-texto-suave);
+  border: 1px solid var(--color-borde);
   padding: 10px 22px;
   font-size: 0.95rem;
   border-radius: 30px;
@@ -448,21 +486,46 @@ section#inicio.vista-activa {
 }
 
 .botones-categorias button:hover {
-  background-color: #1f2937;
+  background-color: var(--color-borde);
   color: #ffffff;
 }
 
 /* =========================================================================
-   9. PANEL DE ADMINISTRACIÓN
+   ADAPTACIÓN MÓVIL: PERMITIR SALTO DE LÍNEA Y CENTRAR
+   ========================================================================= */
+@media screen and (max-width: 768px) {
+  .filtros-panel-limpio {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    padding: 10px 15px;
+  }
+
+  .filtro-grupo-limpio {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .chips-plataformas {
+    flex-wrap: wrap;       /* Permite que los botones bajen de línea si no caben */
+    justify-content: center; /* Centra los botones limpiamente en la pantalla */
+    width: 100%;
+  }
+}
+
+/* =========================================================================
+   8. PANEL DE ADMINISTRACIÓN
    ========================================================================= */
 .caja-admin {
   max-width: 600px;
   margin: 40px auto;
-  background: #111827;
+  background: var(--color-panel);
   padding: 35px;
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  border: 1px solid #1f2937;
+  border: 1px solid var(--color-borde);
 }
 
 .caja-admin h2 {
@@ -475,7 +538,7 @@ section#inicio.vista-activa {
 
 .caja-admin p {
   text-align: center;
-  color: #9ca3af;
+  color: var(--color-texto-suave);
   margin-bottom: 30px;
 }
 
@@ -487,24 +550,24 @@ section#inicio.vista-activa {
 
 .grupo-input label {
   font-weight: 600;
-  color: #e2e8f0;
+  color: var(--color-texto);
   margin-bottom: 8px;
   font-size: 0.95rem;
 }
 
-.grupo-input input, 
+.grupo-input input,
 .grupo-input textarea,
 .grupo-input select {
   padding: 12px 16px;
-  border: 1px solid #374151;
-  background-color: #0b0f19;
+  border: 1px solid var(--color-borde-fuerte);
+  background-color: var(--color-fondo);
   color: #ffffff;
   border-radius: 8px;
   font-size: 1rem;
 }
 
 .btn-guardar {
-  background-color: #10b981;
+  background-color: var(--color-verde-guardar);
   color: white;
   border: none;
   padding: 14px;
@@ -516,8 +579,14 @@ section#inicio.vista-activa {
   margin-top: 10px;
 }
 
+.caja-admin-gestion {
+  margin-top: 20px;
+  border-top: 2px dashed #6b7280;
+  padding-top: 20px;
+}
+
 /* =========================================================================
-   10. SECCIÓN CARRITO Y BOTÓN DE WHATSAPP
+   9. SECCIÓN CARRITO Y WHATSAPP
    ========================================================================= */
 .seccion-carrito {
   max-width: 800px;
@@ -526,25 +595,25 @@ section#inicio.vista-activa {
 }
 
 .caja-carrito {
-  background: #111827;
+  background: var(--color-panel);
   padding: 30px;
   border-radius: 16px;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--color-borde);
 }
 
 .item-carrito-fila {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #0b0f19;
+  background: var(--color-fondo);
   padding: 15px 20px;
   border-radius: 8px;
   margin-bottom: 12px;
-  border: 1px solid #1f2937;
+  border: 1px solid var(--color-borde);
 }
 
 .btn-eliminar-item {
-  background-color: #ef4444;
+  background-color: var(--color-rojo-eliminar);
   color: white;
   border: none;
   padding: 6px 12px;
@@ -556,12 +625,12 @@ section#inicio.vista-activa {
 .carrito-total-footer {
   margin-top: 30px;
   text-align: right;
-  border-top: 1px solid #1f2937;
+  border-top: 1px solid var(--color-borde);
   padding-top: 20px;
 }
 
 .btn-whatsapp {
-  background-color: #25d366;
+  background-color: var(--color-whatsapp);
   color: white;
   border: none;
   padding: 14px 28px;
@@ -573,10 +642,8 @@ section#inicio.vista-activa {
 }
 
 /* =========================================================================
-   ESTILOS DEL BUSCADOR MINIMALISTA Y DROPDOWN TIPO XBOX
+   10. BUSCADOR MINIMALISTA Y DROPDOWN TIPO XBOX
    ========================================================================= */
-
-/* CENTRADO ABSOLUTO: Evita que el menú se mueva a la izquierda */
 @media screen and (min-width: 993px) {
   .nav-principal ul.enlaces-centro {
     position: absolute;
@@ -587,7 +654,6 @@ section#inicio.vista-activa {
   }
 }
 
-/* Lupa minimalista */
 .btn-lupa {
   background: transparent;
   border: none;
@@ -598,20 +664,20 @@ section#inicio.vista-activa {
   border-radius: 50%;
   transition: background 0.3s, transform 0.2s;
 }
-.btn-lupa:hover { background: #1f2937; transform: scale(1.1); }
+.btn-lupa:hover { background: var(--color-borde); transform: scale(1.1); }
 
-/* Caja de búsqueda expandible */
 .envoltura-input-busqueda {
-  display: none; /* Oculto inicialmente */
+  display: none;
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: #202020; /* Fondo oscuro tipo Xbox */
-  border: 1px solid #2e3230; /* Borde verde */
+  background: #202020;
+  border: 1px solid #2e3230;
   padding: 6px;
   z-index: 2000;
-  width: 480px; /* Ancho largo */
+  width: 480px;
+  max-width: 90vw;
   box-shadow: 0 4px 15px rgba(0,0,0,0.6);
 }
 
@@ -622,31 +688,33 @@ section#inicio.vista-activa {
 
 .envoltura-input-busqueda input {
   flex-grow: 1;
+  min-width: 0;
   background: transparent;
   border: none;
   color: white;
   padding: 10px 15px;
   outline: none;
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
-/* Botón cancelar */
 .btn-cerrar-busqueda {
   background: transparent;
-  border: 1px solid #9ca3af;
+  border: 1px solid var(--color-texto-suave);
   color: white;
-  padding: 8px 15px;
+  padding: 8px 12px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
   transition: all 0.2s;
+  font-size: 0.85rem;
 }
-.btn-cerrar-busqueda:hover { background: #374151; border-color: #fff; }
+.btn-cerrar-busqueda:hover { background: var(--color-borde-fuerte); border-color: #fff; }
 
-/* Lista de resultados desplegable (Dropdown) */
 .dropdown-resultados {
   display: none;
   position: absolute;
-  top: 100%; /* Aparece justo abajo del input */
+  top: 100%;
   left: -1px;
   width: calc(100% + 2px);
   background-color: #2b2b2b;
@@ -660,7 +728,6 @@ section#inicio.vista-activa {
 
 .dropdown-resultados.activo { display: block; }
 
-/* Items dentro de la lista de resultados */
 .item-resultado {
   display: flex;
   align-items: center;
@@ -681,28 +748,18 @@ section#inicio.vista-activa {
 
 .info-resultado { display: flex; flex-direction: column; text-align: left; }
 .info-resultado h4 { margin: 0; color: #fff; font-size: 0.95rem; font-weight: 600; }
-.info-resultado span { color: #9ca3af; font-size: 0.8rem; }
+.info-resultado span { color: var(--color-texto-suave); font-size: 0.8rem; }
 
-/* Ajuste móvil para el dropdown */
-@media screen and (max-width: 992px) {
-  .contenedor-buscador-dinamico { display: none !important; }
-  #dropdown-resultados-movil { width: 100%; left: 0; }
-}
-
-/* =========================================================================
-   ESTILOS DEL BUSCADOR MÓVIL
-   ========================================================================= */
-/* 1. Ocultarlo por defecto en computadoras */
 .buscador-movil {
   display: none;
+  position: relative;
 }
 
-/* 2. Devolverle el estilo oscuro y bordes redondeados */
 .buscador-movil input {
   padding: 10px 18px;
   border-radius: 25px;
-  border: 1px solid #374151;
-  background-color: #0b0f19;
+  border: 1px solid var(--color-borde-fuerte);
+  background-color: var(--color-fondo);
   color: white;
   font-size: 0.95rem;
   outline: none;
@@ -717,123 +774,12 @@ section#inicio.vista-activa {
 }
 
 /* =========================================================================
-   11. ADAPTACIÓN RESPONSIVA (MÓVILES Y PANTALLAS HORIZONTALES)
-   ========================================================================= */
-@media screen and (max-width: 992px), screen and (max-height: 500px) {
-
-  /* Botón de hamburguesa visible a la izquierda */
-  .menu-hamburguesa {
-    display: block;
-    position: absolute;
-    left: 15px;
-    top: 15px;
-    z-index: 1001;
-  }
-
-  /* Ajuste de barra principal en móvil */
-  .menu-principal,
-  .nav-principal {
-    display: flex !important;
-    justify-content: flex-end !important;
-    align-items: center;
-    width: 100%;
-    padding: 10px 15px;
-  }
-
-  /* Panel de navegación lateral emergente */
-  .menu-principal ul,
-  .nav-principal ul {
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 250px; 
-    height: 100vh; 
-    background-color: #1a1a1a;
-    z-index: 999;
-    transition: right 0.3s ease-in-out; 
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    padding-top: 80px; 
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
-    margin: 0;
-    gap: 20px;
-  }
-
-  .menu-principal ul li a,
-  .nav-principal ul li a {
-    font-size: 18px;
-    width: 100%;
-    text-align: center;
-    padding: 10px 0;
-  }
-
-  /* Despliegue del menú móvil con JavaScript */
-  .menu-principal.active ul,
-  .nav-principal.active ul {
-    right: 0;
-  }
-
-  /* Muestra la capa oscura tras el menú */
-  .overlay-menu.active {
-    display: block;
-  }
-
-  /* Animaciones del botón hamburguesa a una 'X' */
-  .menu-hamburguesa.active span:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-  }
-  .menu-hamburguesa.active span:nth-child(2) {
-    opacity: 0; 
-  }
-  .menu-hamburguesa.active span:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
-  }
-
-  /* Reordenamiento del slider en pantallas pequeñas */
-  .tarjeta-slider {
-    flex-direction: column-reverse;
-    gap: 15px;
-  }
-
-  .info-slider {
-    width: 100%;
-    text-align: center;
-  }
-
-  .imagen-slider-container {
-    width: 100%;
-  }
-
-  /* OCULTA el buscador de la esquina en móviles */
-  .buscador-desktop {
-    display: none !important;
-  }
-
-  /* MUESTRA el buscador dentro de la lista desplegable */
-  .buscador-movil {
-    display: flex;
-    width: 90%;
-    margin-bottom: 20px;
-    justify-content: center;
-  }
-
-  .buscador-movil input {
-    width: 100%; /* Que ocupe todo el ancho del panel lateral */
-  }
-  
-  .buscador-movil input:focus {
-    width: 100%; /* Evita que crezca de más en celular */
-  }
-}
-
-/* =========================================================================
-   ESTILOS DEL FOOTER / PIE DE PÁGINA
+   11. FOOTER, MODALES Y SKELETON LOADERS
    ========================================================================= */
 .pie-pagina {
-  background-color: #0b0f19;
-  border-top: 1px solid #1f2937;
-  color: #9ca3af;
+  background-color: var(--color-fondo);
+  border-top: 1px solid var(--color-borde);
+  color: var(--color-texto-suave);
   padding: 40px 20px 20px;
   margin-top: 80px;
 }
@@ -846,47 +792,22 @@ section#inicio.vista-activa {
   gap: 40px;
 }
 
-.footer-columna h3.logo-footer {
-  color: #ffffff;
-  font-size: 1.3rem;
-  margin-bottom: 12px;
-  letter-spacing: 0.5px;
-}
-
+.footer-columna h3.logo-footer,
 .footer-columna h4 {
   color: #ffffff;
-  font-size: 1rem;
-  margin-bottom: 15px;
-  font-weight: 600;
 }
 
-.footer-columna p {
-  font-size: 0.9rem;
-  line-height: 1.6;
-  color: #9ca3af;
-}
-
-.footer-columna ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-columna ul li {
-  margin-bottom: 10px;
-}
-
+.footer-columna p,
 .footer-columna ul li a,
 .redes-sociales a {
-  color: #9ca3af;
+  color: var(--color-texto-suave);
   text-decoration: none;
   font-size: 0.9rem;
-  transition: color 0.2s ease;
 }
 
 .footer-columna ul li a:hover,
 .redes-sociales a:hover {
-  color: #34d399; /* Verde de acento al pasar el cursor */
+  color: var(--color-acento);
 }
 
 .redes-sociales {
@@ -897,42 +818,25 @@ section#inicio.vista-activa {
 
 .footer-derechos {
   text-align: center;
-  border-top: 1px solid #1f2937;
+  border-top: 1px solid var(--color-borde);
   margin-top: 40px;
   padding-top: 20px;
   font-size: 0.85rem;
   color: #6b7280;
 }
 
-/* Adaptación responsiva para móviles */
-@media screen and (max-width: 768px) {
-  .contenedor-footer {
-    grid-template-columns: 1fr;
-    gap: 25px;
-    text-align: center;
-  }
-
-  .redes-sociales {
-    align-items: center;
-  }
-}
-
-/* =========================================================================
-   ESTILOS MODAL CÓMO COMPRAR
-   ========================================================================= */
 .btn-ayuda-carrito {
   background: transparent;
   border: none;
-  color: #34d399;
+  color: var(--color-acento);
   cursor: pointer;
   font-size: 0.9rem;
   margin-top: 15px;
   text-decoration: underline;
   transition: color 0.2s;
 }
-.btn-ayuda-carrito:hover { color: #10b981; }
+.btn-ayuda-carrito:hover { color: var(--color-verde-guardar); }
 
-/* Fondo oscuro transparente */
 .modal-overlay {
   display: none;
   position: fixed;
@@ -947,10 +851,9 @@ section#inicio.vista-activa {
 
 .modal-overlay.activo { display: flex; }
 
-/* Caja de contenido */
 .modal-contenido {
-  background: #111827;
-  border: 1px solid #374151;
+  background: var(--color-panel);
+  border: 1px solid var(--color-borde-fuerte);
   border-radius: 12px;
   padding: 30px;
   max-width: 500px;
@@ -965,17 +868,11 @@ section#inicio.vista-activa {
   top: 15px; right: 20px;
   background: transparent;
   border: none;
-  color: #9ca3af;
+  color: var(--color-texto-suave);
   font-size: 1.8rem;
   cursor: pointer;
 }
 .modal-cerrar:hover { color: white; }
-
-.modal-contenido h3 {
-  margin-top: 0;
-  color: #ffffff;
-  font-size: 1.25rem;
-}
 
 .pasos-guia {
   margin: 20px 0;
@@ -991,7 +888,7 @@ section#inicio.vista-activa {
 }
 
 .paso-item span {
-  background: #34d399;
+  background: var(--color-acento);
   color: #000;
   font-weight: bold;
   width: 28px; height: 28px;
@@ -1003,11 +900,11 @@ section#inicio.vista-activa {
 }
 
 .paso-item h4 { margin: 0 0 4px 0; font-size: 0.95rem; color: #fff; }
-.paso-item p { margin: 0; font-size: 0.85rem; color: #9ca3af; line-height: 1.4; }
+.paso-item p { margin: 0; font-size: 0.85rem; color: var(--color-texto-suave); line-height: 1.4; }
 
 .btn-entendido {
   width: 100%;
-  background: #34d399;
+  background: var(--color-acento);
   color: #000;
   font-weight: bold;
   border: none;
@@ -1016,14 +913,11 @@ section#inicio.vista-activa {
   cursor: pointer;
   margin-top: 10px;
 }
-.btn-entendido:hover { background: #10b981; }
+.btn-entendido:hover { background: var(--color-verde-guardar); }
 
-/* =========================================================================
-   ESTILOS DE SKELETON LOADER (ESQUELETO DE CARGA)
-   ========================================================================= */
 .tarjeta-skeleton {
-  background-color: #111827;
-  border: 1px solid #1f2937;
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-borde);
   border-radius: 8px;
   padding: 15px;
   display: flex;
@@ -1032,9 +926,8 @@ section#inicio.vista-activa {
   min-height: 320px;
 }
 
-/* Efecto de brillo animado en degradado */
 .skeleton-animacion {
-  background: linear-gradient(90deg, #1f2937 25%, #374151 50%, #1f2937 75%);
+  background: linear-gradient(90deg, var(--color-borde) 25%, var(--color-borde-fuerte) 50%, var(--color-borde) 75%);
   background-size: 200% 100%;
   animation: esqueleto-brillo 1.5s infinite;
   border-radius: 6px;
@@ -1045,40 +938,15 @@ section#inicio.vista-activa {
   100% { background-position: -200% 0; }
 }
 
-/* Bloques individuales del esqueleto */
-.skeleton-imagen {
-  width: 100%;
-  height: 180px;
-}
-
-.skeleton-titulo {
-  height: 22px;
-  width: 75%;
-}
-
-.skeleton-categoria {
-  height: 14px;
-  width: 45%;
-}
-
-.skeleton-boton {
-  height: 38px;
-  width: 100%;
-  margin-top: auto;
-}
-
-/* =========================================================================
-   ESTILOS BOTÓN VOLVER ARRIBA
-   ========================================================================= */
 .btn-volver-arriba {
   position: fixed;
   bottom: 30px;
   right: 30px;
   width: 48px;
   height: 48px;
-  background-color: #111827;
-  border: 1px solid #374151;
-  color: #34d399; /* Verde de acento */
+  background-color: var(--color-panel);
+  border: 1px solid var(--color-borde-fuerte);
+  color: var(--color-acento);
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -1086,15 +954,12 @@ section#inicio.vista-activa {
   justify-content: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   z-index: 2000;
-  
-  /* Transición de aparición/desaparición */
   opacity: 0;
   visibility: hidden;
   transform: translateY(20px);
   transition: all 0.3s ease;
 }
 
-/* Estado cuando el usuario hace scroll hacia abajo */
 .btn-volver-arriba.visible {
   opacity: 1;
   visibility: visible;
@@ -1102,8 +967,199 @@ section#inicio.vista-activa {
 }
 
 .btn-volver-arriba:hover {
-  background-color: #1f2937;
-  border-color: none;
+  background-color: var(--color-borde);
+  border-color: var(--color-acento);
   transform: translateY(-4px);
   box-shadow: 0 6px 16px rgba(52, 211, 153, 0.3);
+}
+
+/* =========================================================================
+   12. LOGIN ADMIN
+   ========================================================================= */
+.login-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-caja {
+  background: var(--color-panel);
+  padding: 30px;
+  border-radius: 10px;
+  width: 300px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  color: #ffffff;
+  border: 1px solid var(--color-borde-fuerte);
+}
+
+.login-campo {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.login-campo label {
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.login-campo input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: 4px;
+  background-color: var(--color-fondo);
+  color: #fff;
+}
+
+.login-botones {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-login-ingresar,
+.btn-login-cancelar {
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-login-ingresar { background-color: var(--color-verde-guardar); }
+.btn-login-cancelar { background-color: var(--color-rojo-eliminar); }
+
+/* =========================================================================
+   13. ADAPTACIÓN RESPONSIVA (MÓVILES)
+   ========================================================================= */
+@media screen and (max-width: 992px), screen and (max-height: 500px) {
+  .contenedor-buscador-dinamico {
+    display: none !important;
+  }
+
+  .buscador-movil {
+    display: flex !important;
+    width: 90%;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+
+  .menu-hamburguesa {
+    display: block;
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    z-index: 1001;
+  }
+
+  .menu-principal,
+  .nav-principal {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center;
+    width: 100%;
+    padding: 10px 15px;
+  }
+
+  .menu-principal ul,
+  .nav-principal ul {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background-color: #1a1a1a;
+    z-index: 999;
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3);
+    margin: 0;
+    gap: 20px;
+  }
+
+  .menu-principal ul li a,
+  .nav-principal ul li a {
+    font-size: 18px;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .menu-principal.active ul,
+  .nav-principal.active ul {
+    right: 0;
+  }
+
+  .overlay-menu.active {
+    display: block;
+  }
+
+  .menu-hamburguesa.active span:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+  .menu-hamburguesa.active span:nth-child(2) { opacity: 0; }
+  .menu-hamburguesa.active span:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+
+  .tarjeta-slider {
+    flex-direction: column-reverse;
+    gap: 15px;
+  }
+
+  .info-slider, .imagen-slider-container {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .filtros-panel-limpio {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 10px 15px;
+    gap: 15px;
+  }
+
+  .filtro-grupo-limpio {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 6px;
+  }
+}
+/* =========================================================================
+   BUSCADOR PANEL DE ADMINISTRACIÓN
+   ========================================================================= */
+.buscador-admin-container {
+  display: flex;
+  justify-content: center;
+  padding: 0 40px;
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.input-buscador-admin {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 20px;
+  border-radius: 30px; /* Mantiene la estética de píldora unificada */
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-panel);
+  color: white;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-buscador-admin:focus {
+  border-color: var(--color-texto-suave);
+  background-color: #161f33;
 }

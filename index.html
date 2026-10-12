@@ -1,41 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Videojuegos | Catálogo de Juegos y Consolas</title>
-  <meta name="description" content="Encuentra las mejores ofertas en videojuegos para PC, PlayStation, Xbox y Nintendo. Compra rápida y segura con entrega inmediata.">
-  <meta name="keywords" content="videojuegos, tienda de juegos, comprar juegos, PlayStation, Xbox, Nintendo, PC gaming, claves digitales">
-  <meta name="robots" content="index, follow">
-  <meta name="author" content="Tu Nombre o Nombre de la Tienda">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda de Videojuegos | Catálogo de Juegos y Consolas</title>
 
   <!-- Open Graph / WhatsApp, Facebook, Discord -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/">
   <meta property="og:title" content="Tienda de Videojuegos | Las mejores ofertas Gamer">
-  <meta property="og:description" content="Explora nuestro catálogo completo de videojuegos con precios actualizados. ¡Haz tu pedido directamente por WhatsApp!">
-  <meta property="og:image" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.png">
+  <meta property="og:description"
+    content="Explora nuestro catálogo completo de videojuegos con precios actualizados. ¡Haz tu pedido directamente por WhatsApp!">
+  <meta property="og:image"
+    content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.png?v=3">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
   <meta property="og:site_name" content="Tienda Gamer">
 
   <!-- Twitter Cards -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tienda de Videojuegos | Las mejores ofertas Gamer">
-  <meta name="twitter:description" content="Explora nuestro catálogo completo de videojuegos con precios actualizados. ¡Haz tu pedido directamente por WhatsApp!">
-  <meta name="twitter:image" content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.jpg">
-    <link rel="icon" type="image/png" href="imagenes/favicon.png">
-    <link rel="stylesheet" href="css/styles.css">
+  <meta name="twitter:description"
+    content="Explora nuestro catálogo completo de videojuegos con precios actualizados. ¡Haz tu pedido directamente por WhatsApp!">
+  <meta name="twitter:image"
+    content="https://steneithan.github.io/Pagina-web-de-Videojuegos/imagenes/og-preview.png?v=3">
+
+  <link rel="icon" type="image/png" href="imagenes/favicon.png">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
   <!-- =========================================
        MENÚ DE NAVEGACIÓN PRINCIPAL
        =========================================
-       Agregamos el id="nav-principal" 
+       Agregamos el id="nav-principal"
        para que JavaScript pueda controlarlo en móviles. -->
   <nav class="menu-principal nav-principal" id="nav-principal">
-    
+
     <!-- LADO IZQUIERDO: Menú móvil y Buscador Minimalista -->
-    <div class="menu-izquierda" style="display: flex; align-items: center; gap: 15px; z-index: 100;">
+    <div class="menu-izquierda">
       <!-- Botón hamburguesa -->
       <button class="menu-hamburguesa" id="btn-hamburguesa" title="Abrir menú">
         <span></span><span></span><span></span>
@@ -44,16 +50,17 @@
       <!-- NUEVO: Buscador de ESCRITORIO Minimalista -->
       <div class="contenedor-buscador-dinamico">
         <button id="btn-lupa" class="btn-lupa" title="Buscar">
-  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="11" cy="11" r="8"></circle>
-    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-  </svg>
-</button>
-        
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
         <div class="envoltura-input-busqueda" id="envoltura-busqueda">
           <input type="text" id="input-busqueda-global" placeholder="Buscar en la tienda...">
           <button id="btn-cerrar-busqueda" class="btn-cerrar-busqueda">Cancelar</button>
-          
+
           <!-- Lista de resultados flotante (Estilo Xbox) -->
           <div id="dropdown-resultados" class="dropdown-resultados"></div>
         </div>
@@ -63,7 +70,7 @@
     <!-- CENTRO: Enlaces anclados -->
     <ul class="enlaces-centro">
       <!-- Buscador MÓVIL -->
-      <li class="buscador-movil" style="position: relative;">
+      <li class="buscador-movil">
         <input type="text" id="buscador-celular" placeholder="Buscar juego...">
         <div id="dropdown-resultados-movil" class="dropdown-resultados"></div>
       </li>
@@ -71,9 +78,9 @@
       <li><a href="#" onclick="cambiarVista('categorias')">Categorías</a></li>
       <li><a href="#" onclick="cambiarVista('plataformas')">Plataformas</a></li>
     </ul>
-    
+
     <!-- LADO DERECHO: Carrito -->
-    <div class="menu-derecha" style="z-index: 100;">
+    <div class="menu-derecha">
       <button id="btn-carrito" onclick="cambiarVista('carrito')" class="btn-icono-nav" title="Ver Carrito">
         🛒 <span id="contador-carrito">0</span>
       </button>
@@ -83,7 +90,7 @@
   <!-- =========================================
        NUEVO: CAPA OSCURA DE FONDO (MÓVILES)
        =========================================
-       Al hacer clic fuera del menú en un celular, 
+       Al hacer clic fuera del menú en un celular,
        esta capa detectará el clic y cerrará el panel. -->
   <div class="overlay-menu" id="overlay-menu"></div>
 
@@ -96,7 +103,7 @@
       <h1 onclick="toqueSecreto()">Bienvenido a tu Catálogo Gamer</h1>
       <p>Explora nuestro inventario de videojuegos y plataformas digitales.</p>
     </div>
-    
+
     <div class="caja-carrusel-destacados animacion-entrada">
       <div class="contenedor-slider">
         <div id="slider-track" class="slider-track"></div>
@@ -104,7 +111,8 @@
     </div>
 
     <div class="instrucciones-limpias animacion-entrada">
-      <p><strong>¿Cómo comprar?</strong> 1. Explora el catálogo &bull; 2. Selecciona tu juego &bull; 3. Agrega al carrito &bull; 4. Realiza el pago y recibe tu clave por WhatsApp.</p>
+      <p><strong>¿Cómo comprar?</strong> 1. Explora el catálogo &bull; 2. Selecciona tu juego &bull; 3. Agrega al
+        carrito &bull; 4. Realiza el pago y recibe tu clave por WhatsApp.</p>
     </div>
   </section>
 
@@ -121,33 +129,47 @@
     </div>
     <div id="contenedor-juegos-categorias" class="catalogo-grid"></div>
   </section>
-  
-  <!-- =========================================
-       SECCIÓN: PLATAFORMAS
-       ========================================= -->
+
+
 <!-- =========================================
        SECCIÓN: PLATAFORMAS
        ========================================= -->
   <section id="plataformas" class="vista-oculta">
-    <div class="filtros-contenedor">
+    <div class="filtros-panel-limpio">
       
-      <!-- Filtro de Consola -->
-      <label for="filtro-plataforma">Selecciona tu consola:</label>
-      <select id="filtro-plataforma" onchange="filtrarPorPlataforma()">
-        <option value="todos">Todos</option>
-        <option value="PlayStation 5">PlayStation 5</option>
-        <option value="Xbox Series">Xbox Series</option>
-        <option value="PC">PC</option>
-        <option value="Nintendo Switch 2">Nintendo Switch 2</option>
-      </select>
+      <!-- Filtro de Consolas (Chips) -->
+      <div class="filtro-grupo-limpio">
+        <div class="chips-plataformas">
+          <button type="button" class="chip-btn activo" onclick="seleccionarChip(this, 'todos')">Todos</button>
+          <button type="button" class="chip-btn" onclick="seleccionarChip(this, 'PlayStation 5')">PS5</button>
+          <button type="button" class="chip-btn" onclick="seleccionarChip(this, 'Xbox Series')">Xbox Series</button>
+          <button type="button" class="chip-btn" onclick="seleccionarChip(this, 'PC')">PC</button>
+          <button type="button" class="chip-btn" onclick="seleccionarChip(this, 'Nintendo Switch 2')">Switch 2</button>
+        </div>
+        <!-- Select oculto para sincronizar JS -->
+        <select id="filtro-plataforma" style="display: none;" onchange="aplicarFiltrosPlataforma()">
+          <option value="todos" selected>todos</option>
+          <option value="PlayStation 5">PlayStation 5</option>
+          <option value="Xbox Series">Xbox Series</option>
+          <option value="PC">PC</option>
+          <option value="Nintendo Switch 2">Nintendo Switch 2</option>
+        </select>
+      </div>
 
-      <!-- Filtro de Precio -->
-      <label for="filtro-orden-precio" style="margin-left: 20px;">Ordenar:</label>
-      <select id="filtro-orden-precio" class="select-filtro" onchange="ordenarPorPrecio()">
-        <option value="predeterminado">Ordenar por: Defecto</option>
-        <option value="menor-mayor">Precio: Menor a Mayor</option>
-        <option value="mayor-menor">Precio: Mayor a Menor</option>
-      </select>
+      <!-- Filtro de Ordenar (Botones de texto + X para limpiar) -->
+      <div class="filtro-grupo-limpio">
+        <div class="chips-plataformas" id="grupo-orden-chips">
+          <button type="button" class="chip-btn" onclick="seleccionarOrden(this, 'menor-mayor')">Menor Precio</button>
+          <button type="button" class="chip-btn" onclick="seleccionarOrden(this, 'mayor-menor')">Mayor Precio</button>
+          <button type="button" class="chip-btn btn-limpiar-orden" onclick="limpiarOrden()" title="Quitar filtro de orden">✕</button>
+        </div>
+        <!-- Select oculto para sincronizar JS -->
+        <select id="filtro-orden-precio" style="display: none;" onchange="aplicarFiltrosPlataforma()">
+          <option value="predeterminado" selected>predeterminado</option>
+          <option value="menor-mayor">menor-mayor</option>
+          <option value="mayor-menor">mayor-menor</option>
+        </select>
+      </div>
 
     </div>
     
@@ -161,7 +183,7 @@
     <div class="caja-admin">
       <h2>Agregar Nuevo Videojuego</h2>
       <p>Llena los datos para registrar un título en el catálogo.</p>
-      
+
       <form id="formulario-juego" onsubmit="guardarNuevoJuego(event)">
         <div class="grupo-input">
           <label for="nuevo-titulo">Título del Juego:</label>
@@ -196,7 +218,7 @@
 
         <div class="grupo-input">
           <label>Categorías (Mantén presionado Ctrl o Cmd):</label>
-          <select id="nuevas-categorias" multiple size="5" required style="padding: 8px;">
+          <select id="nuevas-categorias" multiple size="5" required>
             <option value="Acción">Acción</option>
             <option value="Terror">Terror</option>
             <option value="Disparos">Disparos</option>
@@ -209,9 +231,13 @@
     </div>
 
     <!-- SUB-SECCIÓN: GESTIÓN DE JUEGOS -->
-    <div class="caja-admin" style="margin-top: 20px; border-top: 2px dashed #ccc; padding-top: 20px;">
+    <div class="caja-admin caja-admin-gestion">
       <h3>Gestión y Eliminación de Videojuegos</h3>
       <p>Aquí puedes ver los juegos actuales y eliminarlos con un solo clic:</p>
+      <!-- Buscador para el panel de administración -->
+<div class="buscador-admin-container">
+  <input type="text" id="input-buscador-admin" class="input-buscador-admin" placeholder="🔍 Escribe para buscar juego a eliminar..." oninput="filtrarAdmin(event)">
+</div>
       <div id="contenedor-admin-juegos" class="catalogo-grid"></div>
     </div>
   </section>
@@ -219,20 +245,20 @@
   <!-- =========================================
        MODAL: LOGIN DE ADMINISTRADOR
        ========================================= -->
-  <div id="seccion-login-admin" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
-    <div style="background: #1a1a1a; padding: 30px; border-radius: 10px; width: 300px; box-shadow: 0px 4px 15px rgba(0,0,0,0.7); text-align: center; color: #ffffff;">
-      <h3 style="margin-bottom: 15px; color: #ffffff;">Acceso de Administrador</h3>
-      <div style="margin-bottom: 15px; text-align: left;">
-        <label for="admin-usuario" style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Usuario:</label>
-        <input type="text" id="admin-usuario" placeholder="Ingresa tu usuario" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #444; border-radius: 4px; background-color: #333; color: #fff;">
+  <div id="seccion-login-admin" class="login-overlay">
+    <div class="login-caja">
+      <h3>Acceso de Administrador</h3>
+      <div class="login-campo">
+        <label for="admin-usuario">Usuario:</label>
+        <input type="text" id="admin-usuario" placeholder="Ingresa tu usuario">
       </div>
-      <div style="margin-bottom: 20px; text-align: left;">
-        <label for="admin-password" style="font-size: 14px; font-weight: bold; display: block; margin-bottom: 5px;">Contraseña:</label>
-        <input type="password" id="admin-password" placeholder="••••••••" style="width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #444; border-radius: 4px; background-color: #333; color: #fff;">
+      <div class="login-campo">
+        <label for="admin-password">Contraseña:</label>
+        <input type="password" id="admin-password" placeholder="••••••••">
       </div>
-      <div style="display: flex; justify-content: space-between;">
-        <button onclick="enviarLoginHTML()" style="background-color: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Ingresar</button>
-        <button onclick="document.getElementById('seccion-login-admin').style.display='none'" style="background-color: #dc3545; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Cancelar</button>
+      <div class="login-botones">
+        <button onclick="enviarLoginHTML()" class="btn-login-ingresar">Ingresar</button>
+        <button onclick="cerrarLogin()" class="btn-login-cancelar">Cancelar</button>
       </div>
     </div>
   </div>
@@ -249,55 +275,57 @@
         <button onclick="realizarCompraWhatsApp()" class="btn-whatsapp">
           📲 Realizar compra por WhatsApp
         </button>
-        <!-- Botón dentro de la vista del Carrito -->
-<button type="button" class="btn-ayuda-carrito" onclick="abrirModalComoComprar()">
-  ¿Cómo funciona la compra y entrega?
-</button>
+        <!-- Botón de ayuda dentro de la vista del carrito -->
+        <button type="button" class="btn-ayuda-carrito" onclick="abrirModalComoComprar()">
+          ¿Cómo funciona la compra y entrega?
+        </button>
       </div>
     </div>
   </section>
 
-  <!-- MODAL CÓMO COMPRAR -->
-<div id="modal-como-comprar" class="modal-overlay">
-  <div class="modal-contenido">
-    <button class="modal-cerrar" onclick="cerrarModalComoComprar()">&times;</button>
-    
-    <h3>🚀 Paso a Paso para realizar tu compra</h3>
-    
-    <div class="pasos-guia">
-      <div class="paso-item">
-        <span>1</span>
-        <div>
-          <h4>Confirma tus juegos</h4>
-          <p>Revisa la lista de tus productos y haz clic en "Proceder al Pago".</p>
+  <!-- =========================================
+       MODAL: CÓMO COMPRAR
+       ========================================= -->
+  <div id="modal-como-comprar" class="modal-overlay">
+    <div class="modal-contenido">
+      <button class="modal-cerrar" onclick="cerrarModalComoComprar()">&times;</button>
+
+      <h3>🚀 Paso a Paso para realizar tu compra</h3>
+
+      <div class="pasos-guia">
+        <div class="paso-item">
+          <span>1</span>
+          <div>
+            <h4>Confirma tus juegos</h4>
+            <p>Revisa la lista de tus productos y haz clic en "Proceder al Pago".</p>
+          </div>
+        </div>
+
+        <div class="paso-item">
+          <span>2</span>
+          <div>
+            <h4>Elige tu método de pago</h4>
+            <p>Aceptamos tarjetas de crédito/débito, transferencias y pagos en tiendas asociadas.</p>
+          </div>
+        </div>
+
+        <div class="paso-item">
+          <span>3</span>
+          <div>
+            <h4>Recibe tu código / acceso</h4>
+            <p>Una vez confirmado el pago, recibirás de forma inmediata las llaves de activación en WhatsApp.</p>
+          </div>
         </div>
       </div>
 
-      <div class="paso-item">
-        <span>2</span>
-        <div>
-          <h4>Elige tu método de pago</h4>
-          <p>Aceptamos tarjetas de crédito/débito, transferencias y pagos en tiendas asociadas.</p>
-        </div>
-      </div>
-
-      <div class="paso-item">
-        <span>3</span>
-        <div>
-          <h4>Recibe tu código / acceso</h4>
-          <p>Una vez confirmado el pago, recibirás de forma inmediata las llaves de activación en WhatsApp.</p>
-        </div>
-      </div>
+      <button class="btn-entendido" onclick="cerrarModalComoComprar()">¡Entendido!</button>
     </div>
-
-    <button class="btn-entendido" onclick="cerrarModalComoComprar()">¡Entendido!</button>
   </div>
-</div>
 
   <!-- FOOTER / PIE DE PÁGINA -->
   <footer class="pie-pagina">
     <div class="contenedor-footer">
-      
+
       <!-- Columna 1: Información de la tienda -->
       <div class="footer-columna">
         <h3 class="logo-footer">Catálogo Gamer</h3>
@@ -332,14 +360,18 @@
     </div>
   </footer>
 
-  <!-- BOTÓN FLOTANTE VOLVER ARRIBA -->
-<button id="btn-volver-arriba" class="btn-volver-arriba" title="Volver arriba">
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <polyline points="18 15 12 9 6 15"></polyline>
-  </svg>
-</button>
+  <!-- =========================================
+       BOTÓN FLOTANTE: VOLVER ARRIBA
+       ========================================= -->
+  <button id="btn-volver-arriba" class="btn-volver-arriba" title="Volver arriba">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
