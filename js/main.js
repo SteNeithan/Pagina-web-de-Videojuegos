@@ -262,6 +262,20 @@ function cambiarVista(nombreVista) {
     seccion.classList.add('vista-oculta');
   });
 
+  // ASEGURAR QUE EL BUSCADOR Y SU DROPDOWN SE CIERREN AL CAMBIAR DE VISTA
+  const envolturaBusqueda = document.getElementById('envoltura-busqueda');
+  const dropdownPc = document.getElementById('dropdown-resultados');
+  const inputPc = document.getElementById('input-busqueda-global');
+  if (envolturaBusqueda) envolturaBusqueda.classList.remove('activo');
+  if (dropdownPc) dropdownPc.classList.remove('activo');
+  if (inputPc) inputPc.value = '';
+
+  //NUEVO: Cerrar buscador móvil al cambiar de vista
+  const dropdownMovil = document.getElementById('dropdown-resultados-movil');
+  const inputCelular = document.getElementById('buscador-celular');
+  if (dropdownMovil) dropdownMovil.classList.remove('activo');
+  if (inputCelular) inputCelular.value = '';
+
   let vistaAMostrar = null;
 
   if (nombreVista === 'inicio') {
@@ -636,12 +650,25 @@ function inicializarMenuHamburguesa() {
     const navPrincipal = document.getElementById('nav-principal');
     const overlay = document.getElementById('overlay-menu');
     const linksMenu = document.querySelectorAll('#nav-principal a');
-
-    function toggleMenu() {
+function toggleMenu() {
         btnHamburguesa.classList.toggle('active');
         navPrincipal.classList.toggle('active');
         overlay.classList.toggle('active');
         document.body.classList.toggle('no-scroll');
+
+        // Cerrar y limpiar el buscador PC y Móvil
+        const envolturaBusqueda = document.getElementById('envoltura-busqueda');
+        const dropdownPc = document.getElementById('dropdown-resultados');
+        const inputPc = document.getElementById('input-busqueda-global');
+        if (envolturaBusqueda) envolturaBusqueda.classList.remove('activo');
+        if (dropdownPc) dropdownPc.classList.remove('activo');
+        if (inputPc) inputPc.value = '';
+
+        // 👇 NUEVO: Cerrar y limpiar también el buscador móvil
+        const dropdownMovil = document.getElementById('dropdown-resultados-movil');
+        const inputCelular = document.getElementById('buscador-celular');
+        if (dropdownMovil) dropdownMovil.classList.remove('activo');
+        if (inputCelular) inputCelular.value = '';
     }
 
     if (btnHamburguesa) btnHamburguesa.addEventListener('click', toggleMenu);
@@ -696,7 +723,9 @@ function toqueSecreto() {
 
 document.addEventListener('DOMContentLoaded', inicializarMenuHamburguesa);
 
-// BUSCADOR MINIMALISTA Y DROPDOWN TIPO XBOX
+/* =========================================================================
+   BUSCADOR MINIMALISTA Y DROPDOWN TIPO XBOX (VERSIÓN DEFINITIVA PC Y MÓVIL)
+   ========================================================================= */
 document.addEventListener('DOMContentLoaded', () => {
     const btnLupa = document.getElementById('btn-lupa');
     const envolturaBusqueda = document.getElementById('envoltura-busqueda');
@@ -708,19 +737,42 @@ document.addEventListener('DOMContentLoaded', () => {
     const dropdownMovil = document.getElementById('dropdown-resultados-movil');
 
     if (btnLupa) {
-        btnLupa.addEventListener('click', () => {
+        btnLupa.addEventListener('click', (e) => {
+            e.stopPropagation();
             envolturaBusqueda.classList.add('activo');
-            inputPc.focus();
+            if (inputPc) inputPc.focus();
         });
     }
 
     if (btnCerrar) {
         btnCerrar.addEventListener('click', () => {
-            envolturaBusqueda.classList.remove('activo');
-            inputPc.value = '';
-            dropdownPc.classList.remove('activo');
+            if (envolturaBusqueda) envolturaBusqueda.classList.remove('activo');
+            if (inputPc) inputPc.value = '';
+            if (dropdownPc) dropdownPc.classList.remove('activo');
         });
     }
+
+    // CERRAR BUSCADOR AL HACER CLIC FUERA (TANTO EN PC COMO EN MÓVIL)
+    document.addEventListener('click', (evento) => {
+        // Lógica para PC
+        const contenedorBusqueda = document.querySelector('.menu-izquierda');
+        if (envolturaBusqueda && envolturaBusqueda.classList.contains('activo')) {
+            if (contenedorBusqueda && !contenedorBusqueda.contains(evento.target)) {
+                envolturaBusqueda.classList.remove('activo');
+                if (dropdownPc) dropdownPc.classList.remove('activo');
+                if (inputPc) inputPc.value = '';
+            }
+        }
+
+        // Lógica para M Móvil
+        const buscadorMovil = document.querySelector('.buscador-movil');
+        if (dropdownMovil && dropdownMovil.classList.contains('activo')) {
+            if (buscadorMovil && !buscadorMovil.contains(evento.target)) {
+                dropdownMovil.classList.remove('activo');
+                if (inputCelular) inputCelular.value = '';
+            }
+        }
+    });
 
     function renderizarDropdown(evento, contenedorDropdown) {
         const textoBusqueda = evento.target.value.toLowerCase().trim();
@@ -757,7 +809,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     contenedorDropdown.classList.remove('activo');
                     if (envolturaBusqueda) envolturaBusqueda.classList.remove('activo');
-                    evento.target.value = '';
+                    
+                    if (inputPc) inputPc.value = '';
+                    if (inputCelular) inputCelular.value = '';
 
                     const navPrincipal = document.getElementById('nav-principal');
                     if (navPrincipal && navPrincipal.classList.contains('active')) {
@@ -787,6 +841,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 pintarJuegosCategorias(resultados);
 
                 contenedorDropdown.classList.remove('activo');
+                if (envolturaBusqueda) envolturaBusqueda.classList.remove('activo');
+                evento.target.value = '';
                 evento.target.blur();
 
                 const navPrincipal = document.getElementById('nav-principal');
